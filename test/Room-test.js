@@ -27,10 +27,28 @@ describe('Room', () => {
     expect(newRoom2.number).to.equal(2)
   });
 
-  it('should have a type', () => {
+  it('should have a type property', () => {
     expect(newRoom1.roomType).to.equal('residential suite')
     expect(newRoom2.roomType).to.equal('suite')
-  })
+  });
+
+  it('should have or not have a bidet', () => {
+    expect(newRoom1.bidet).to.equal(true)
+    expect(newRoom2.bidet).to.equal(false)
+  });
+
+  it('should have a bed size property', () => {
+    expect(newRoom1.bedSize).to.equal('queen')
+    expect(newRoom2.bedSize).to.equal('full')
+  });
+
+  it('should have a number of beds property', () => {
+    expect(newRoom1.numBeds).to.equal(1)
+    expect(newRoom2.numBeds).to.equal(2)
+  });
+
+  
+
 
   
 });
