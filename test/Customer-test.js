@@ -10,7 +10,7 @@ describe('Customer', () => {
     newCustomer = new Customer()
   });
 
-  it('should return true', function () {
-    expect(true).to.equal(true);
+  it('should be a function', () => {
+    expect(Customer).to.be.a('function');
   });
 });
