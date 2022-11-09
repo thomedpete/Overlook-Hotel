@@ -3,9 +3,32 @@ const expect = chai.expect;
 import Booking from '../src/classes/Booking';
 import { user1, user2, roomsArray, bookingsArray } from '../src/test-data/test-data';
 
-describe('Booking', function() {
-  
+describe('Booking',() => {
+  let singleBooking1,singleBooking2,bookingInfo1,bookingInfo2; 
+
+  beforeEach(() => {
+    bookingInfo1 = bookingsArray[0];
+    bookingInfo2 = bookingsArray[1];
+    singleBooking1 = new Booking(bookingInfo1);
+    singleBooking2 = new Booking(bookingInfo2);
+    });
+
   it('should be a function', () =>  {
     expect(Booking).to.be.a('function');
   });
+
+  it('should be an instance of Booking', () => {
+    expect(singleBooking1).to.be.an.instanceOf(Booking);
+  });
+
+  it('should have an id property', () => {
+    expect(singleBooking1.id).to.equal("5fwrgu4i7k55hl6sz");
+    expect(singleBooking2.id).to.equal("5fwrgu4i7k55hl6t5");
+  });
+
+  it('should have a user ID', () => {
+    expect(singleBooking1.userID).to.equal(9);
+    expect(singleBooking2.userID).to.equal(43);
+  });
+
 });
