@@ -4,13 +4,29 @@ import { user1, user2, roomsArray, bookingsArray } from '../src/test-data/test-d
 const expect = chai.expect;
 
 describe('Customer', () => {
-  let newCustomer;
+  let newCustomer1,newCustomer2,userInfo1,userInfo2;
 
   beforeEach(() => {
-  
+    userInfo1 = user1;
+    userInfo2 = user2;
+    newCustomer1 = new Customer(userInfo1);
+    newCustomer2 = new Customer(userInfo2);
   });
 
-  it.skip('should be a function', () => {
+  it('should be a function', () => {
     expect(Customer).to.be.a('function');
   });
+
+  it('should be an instance of Customer', () => {
+    expect(newCustomer1).to.be.an.instanceOf(Customer);
+  });
+
+  it('should have a name property', () => {
+    expect(newCustomer1.name).to.equal('Leatha Ullrich')
+    expect(newCustomer2.name).to.equal('Rocio Schuster')
+  });
+
+
+
+
 });
