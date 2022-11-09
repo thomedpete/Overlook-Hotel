@@ -1,5 +1,6 @@
 import chai from 'chai';
 import Room from '../src/classes/Room';
+import { user1, user2, roomsArray, bookingsArray } from '../src/test-data/test-data';
 const expect = chai.expect;
 
 describe('Room', () => {
