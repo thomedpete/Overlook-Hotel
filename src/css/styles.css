@@ -1,3 +1,55 @@
 body {
-  background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%);
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  background: radial-gradient(circle, rgba(63, 94, 251, 1) 0%, rgba(252, 70, 107, 1) 100%);
+}
+
+.log-in-page {
+  width: 50vw;
+  height: 50vh;
+  background-color: aquamarine;
+}
+
+.navigation-bar {
+  width: 100vw;
+  height: 20vh;
+  background-color: brown;
+}
+
+.dashboard {
+  display: flex;
+  width: 100vw;
+  height: 50vh;
+  background-color: rgb(42, 149, 165);
+}
+
+.past-future-bookings {
+  width: 10vw;
+  height: 10vh;
+  background-color: rgb(177, 226, 43);
+}
+
+.calander-for-booking {
+  width: 10vw;
+  height: 10vh;
+  background-color: rgb(226, 43, 159);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.hidden {
+  display: none;
 }
