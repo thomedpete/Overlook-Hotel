@@ -1,7 +1,7 @@
 import chai from 'chai';
 const expect = chai.expect;
 import Booking from '../src/classes/Booking';
-import { user1, user2, roomsArray, bookingsArray } from '../src/test-data/test-data';
+import { bookingsArray } from '../src/test-data/test-data';
 
 describe('Booking',() => {
   let singleBooking1,singleBooking2,bookingInfo1,bookingInfo2; 
