@@ -26,9 +26,21 @@ describe('Booking',() => {
     expect(singleBooking2.id).to.equal("5fwrgu4i7k55hl6t5");
   });
 
-  it('should have a user ID', () => {
+  it('should have a USER ID property', () => {
     expect(singleBooking1.userID).to.equal(9);
     expect(singleBooking2.userID).to.equal(43);
   });
+
+  it('should have a date property', () => {
+    expect(singleBooking1.date).to.equal("2022/04/22");
+    expect(singleBooking2.date).to.equal("2022/01/24");
+  });
+
+  it('should have a room number property', () => {
+    expect(singleBooking1.roomNumber).to.equal(15);
+    expect(singleBooking2.roomNumber).to.equal(24);
+  });
+
+
 
 });
