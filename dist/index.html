@@ -35,14 +35,18 @@
 
   <section class="dashboard" id="dashBoard">
     
-    <h2>Guest Dashbard</h2>
+    <h2>Guest Dashboard</h2>
    
+    <section class="calander-for-booking-container"> 
+      <h3>Book while you can!</h3>
+      <label class="calender-label" for="start">Select a date!:</label>
+      <input class="calender" type="date" id="start" name="trip-start" value="2022-10-27" min="2022-10-27" max="2030-12-31" tabindex="0">
+    </section>
+
     <section class="past-future-bookings" id="pastFutureBookings">
-      <p>Past and Upcoming Room Bookings</p>
+      <p class="past-upcoming-label">Past and Upcoming Room Bookings</p>
     </section>
-    <section class="calander-for-booking-container"> <label for="start">Book a Room:</label>
-      <input class="calender" type="date" id="start" name="trip-start" value="2022-10-27" min="2022-10-27" max="2030-12-31">
-    </section>
+
     <img src="./images/helpfulFrontDesk.png" class="friendly-staff" alt="front desk orcs helping guests">
 
   </section>
