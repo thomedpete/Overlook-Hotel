@@ -41,12 +41,28 @@ function getUpdatedPromiseData() {
     upcomingBookings = customer.futureBookings;
     totalMoneySpent = customer.returnTotalMoneySpent(roomData);
     displayUserName();
+    displayUserFutureBookings();
   })
+}
+
+window.addEventListener('load', getUpdatedPromiseData);
+
+function mapBookings(bookingsArray) {
+  let mappedBookings = ''
+  mappedBookings = bookingsArray.map((booking) => {
+    return `Date: ${booking.date} <br />
+        Room Number: ${booking.roomNumber} <br />`
+  }).join('')
+  return mappedBookings
 }
 
 function displayUserName() {
   userWelcome.innerText = `Welcome ${customer.name}`
   let firstName = customer.name.split(' ')[0]
   userDashBoardLabel.innerText = `${firstName}'s Dashboard `
-}
-window.addEventListener('load', getUpdatedPromiseData);
+};
+
+function displayUserFutureBookings() {
+ let future = mapBookings(upcomingBookings)
+  pastFutureBookings.innerHTML = `${future}`
+};
