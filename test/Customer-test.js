@@ -26,6 +26,12 @@ describe('Customer', () => {
     expect(newCustomer2.name).to.equal('Rocio Schuster')
   });
 
+  it('should have an id property', () => {
+    expect(newCustomer1.id).to.equal(1)
+    expect(newCustomer2.id).to.equal(2)
+  });
+
+
 
 
 
