@@ -5,7 +5,7 @@ import './images/overlookLogo.png'
 import './images/theOverlook.png'
 import './images/helpfulFrontDesk.png'
 import './images/eye-logo.png'
-
+import { fetchData, getPromiseData } from './apiCalls'
 //~~~QuerySelectors~~~
 const userWelcome = document.getElementById('userWelcome');
 const userDashBoardLabel = document.getElementById('userDashboardLabel');
