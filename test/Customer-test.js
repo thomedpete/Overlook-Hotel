@@ -4,13 +4,14 @@ import { user1, user2, roomsArray, bookingsArray } from '../src/test-data/test-d
 const expect = chai.expect;
 
 describe('Customer', () => {
-  let newCustomer1,newCustomer2,userInfo1,userInfo2;
+  let newCustomer1,newCustomer2,userInfo1,userInfo2,allBookings;
 
   beforeEach(() => {
     userInfo1 = user1;
     userInfo2 = user2;
     newCustomer1 = new Customer(userInfo1);
     newCustomer2 = new Customer(userInfo2);
+    allBookings = bookingsArray
   });
 
   it('should be a function', () => {
@@ -31,6 +32,35 @@ describe('Customer', () => {
     expect(newCustomer2.id).to.equal(2)
   });
 
+  it('should be able to check existing bookings', () => {
+    newCustomer1.checkAllBookings(allBookings)
+    expect(newCustomer1.pastBookings).to.deep.equal(
+      [
+        {
+          id: '5fwrgu4i7k55hl6t8',
+          userID: 1,
+          date: '2022/02/05',
+          roomNumber: 12
+        }
+    ]
+    )
+  });
+
+  it('should not push bookings in if they do not match userID', () => {
+    newCustomer1.checkAllBookings(allBookings)
+    newCustomer2.checkAllBookings(allBookings)
+    
+    expect(newCustomer1.futureBookings).to.deep.equal([])
+    
+    expect(newCustomer2.futureBookings).to.deep.equal([
+      {
+      "date": "2023/01/09",
+      "id": "5fwrgu4i7k55hl6uf",
+      "roomNumber": 18,
+      "userID": 2
+     }
+    ])
+  });
 
 
 
