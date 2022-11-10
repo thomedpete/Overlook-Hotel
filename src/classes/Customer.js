@@ -7,6 +7,7 @@ class Customer {
     this.bookedRooms = []
     this.totalMoneySpent = 0
   }
-}
+  
+};
 
 export default Customer;
