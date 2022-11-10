@@ -53,6 +53,12 @@ height: 20vh;
 box-shadow: 10px 10px 5px #888888;
 }
 
+.user-welcome {
+  font-size: 30px;
+  color:azure;
+  margin-left: -13vw;
+}
+
 .dashboard {
 display: flex;
 flex-direction: column;
