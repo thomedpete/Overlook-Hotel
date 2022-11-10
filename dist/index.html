@@ -10,7 +10,7 @@
 </head>
 
 <body>
-  <section class="log-in-page hidden" id="logInPage">
+  <section class="log-in-page hidden " id="logInPage">
     <form action="" method="get" class="form-example">
       <div class="login-form username">
         <label for="name">Enter your username: </label>
@@ -24,24 +24,27 @@
         <input type="submit" value="Log In!">
       </div>
     </form>
-    <img src="./images/theOverlook.png" class="nav-logo" alt="a view of the Overlook Hotel in Mordor">
-    
-    <!-- place a sort of logo on log-in as well as h1with the hotels name  -->
+    <img src="./images/theOverlook.png" class="login-logo" alt="a view of the Overlook Hotel in Mordor">
   </section>
+
   <!-- <img src="./images/turing-logo.png" alt="turing logo"> -->
   <nav class="navigation-bar" id="navBar">
     <h1>Overlook Hotel</h1>
     <img src="./images/eye-logo.png" class="nav-logo" alt="eye of sauron ">
   </nav>
+
   <section class="dashboard" id="dashBoard">
-    <h2>this is the dashboard</h2>
-    <img src="./images/helpfulFrontDesk.png" class="friendly-staff" alt="front desk orcs helping guests">
+    
+    <h2>Guest Dashbard</h2>
+   
     <section class="past-future-bookings" id="pastFutureBookings">
       <p>Past and Upcoming Room Bookings</p>
     </section>
     <section class="calander-for-booking-container"> <label for="start">Book a Room:</label>
       <input class="calender" type="date" id="start" name="trip-start" value="2022-10-27" min="2022-10-27" max="2030-12-31">
     </section>
+    <img src="./images/helpfulFrontDesk.png" class="friendly-staff" alt="front desk orcs helping guests">
+
   </section>
   <!-- Do not include the scripts.js or class files here - it is done by the webpack server -->
   <script src="bundle.js"></script>

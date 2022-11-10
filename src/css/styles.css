@@ -3,10 +3,11 @@ body {
   justify-content: center;
   flex-direction: column;
   align-items: center;
+  font-family: fantasy;
   margin: 0;
   border: 0;
   padding: 0;
-  background: radial-gradient(circle, #BDD9Bf 0%, #A997DF 100%);
+  background: radial-gradient(circle,#A997DF  10%, #FFC857 100%);
 }
 
 .log-in-page {
@@ -27,33 +28,49 @@ body {
 
 
 }
+
 h1 {
-font-family: fantasy;
-font-size: 38px;
+font-size: 48px;
 color: azure;
-box-shadow: 6px 4px 5px #a997df;
 margin-left: 2vw;
 margin-bottom: 11vh;
 }
 
-.nav-logo {
-  width: 12vw;
-  height: 20vh;
-  box-shadow: 10px 10px 5px #888888;
+h2 {
+font-size: 38px;
+font-weight: 500;
+color: #003535;
+margin-left: 32vw;
+
+}
+
+.nav-logo, .login-logo {
+width: 12vw;
+height: 20vh;
+box-shadow: 10px 10px 5px #888888;
 }
 
 .dashboard {
-  display: flex;
-  width: 100vw;
-  height: 80vh;
-  background: radial-gradient(circle, #BDD9Bf 0%, #A997DF 100%);
-  box-shadow: 10px 10px 5px #888888;
+display: flex;
+flex-direction: column;
+flex-wrap: wrap;
+align-content: center;
+justify-content: flex-start;
+width: 100vw;
+height: 80vh;
+background: radial-gradient(circle, #A997DF 0%, #FFC857 100%);
+box-shadow: 10px 10px 5px #888888;
+align-items: center;
 }
 
 .friendly-staff {
   width: 30vw;
   height: 55vh;
   opacity: 0.8;
+  margin-top: 2vh;
+  margin-left: 5vw;
+  border: 5px solid #929084;
+  box-shadow: 10px 10px 5px #888888;
 }
 
 .past-future-bookings {
@@ -67,10 +84,11 @@ margin-bottom: 11vh;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  width: 50vw;
+  width: 30vw;
   height: 30vh;
   background-color: rgb(226, 43, 159);
   box-shadow: 10px 10px 5px #888888;
+  margin-right: 8vw;
 }
 
 
