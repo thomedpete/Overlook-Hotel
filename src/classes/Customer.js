@@ -12,8 +12,8 @@ class Customer {
     let filterByUserBookings = bookingsArray.filter((element) => {
       return this.id === element.userID
     });
-    let today = new Date().toJSON().slice(0, 10);
     let compDay;
+    let today = new Date().toJSON().slice(0, 10);
     filterByUserBookings.forEach((booking) => {
       let bookingDate = booking.date;
       let formatDates = bookingDate.split('/').join('-');
@@ -25,9 +25,33 @@ class Customer {
       };
     });
   }
-
-
-
+  returnTotalMoneySpent(roomsArray) {
+    let pastRoomNumbers = this.pastBookings.map((booking) => { 
+      return  booking.roomNumber
+    });
+    roomsArray.forEach((room) => {
+      if (pastRoomNumbers.includes(room.number)) {
+        this.bookedRooms.push(room)
+      }
+    });
+    let futureRoomNumbers = this.futureBookings.map((booking) => { 
+      return  booking.roomNumber
+    });
+    roomsArray.forEach((room) => {
+      if (futureRoomNumbers.includes(room.number)) {
+        this.bookedRooms.push(room)
+      }
+    })
+    let totalCost = this.bookedRooms.reduce((acc, room) => {
+      return acc += room.costPerNight
+    }, 0)
+    this.totalMoneySpent = totalCost
+    return totalCost
+  };
 };
+
+
+
+
 
 export default Customer;

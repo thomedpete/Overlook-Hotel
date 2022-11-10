@@ -59,7 +59,12 @@ describe('Customer', () => {
       "roomNumber": 18,
       "userID": 2
      }
-    ])
+    ]);
+  });
+
+  it('should be able to check total money spent', () => {
+    newCustomer1.checkAllBookings(allBookings)
+    expect(newCustomer1.returnTotalMoneySpent(roomsArray)).to.equal(172.09)
   });
 
 
