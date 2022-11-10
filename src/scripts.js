@@ -21,6 +21,8 @@ const previousBookings = document.getElementById('pastBookings');
 const previousBookingsPage = document.getElementById('previousBookingsPage');
 const navBar= document.getElementById('navBar');
 const dashboard = document.getElementById('dashBoard');
+const dashboardReturn = document.getElementById('backToDashboard');
+
 
 let customerData;
 let bookingData;
@@ -47,7 +49,7 @@ function getUpdatedPromiseData() {
     totalMoneySpent = customer.returnTotalMoneySpent(roomData);
     displayUserName();
     displayUserFutureBookings();
-    displayUserPastBookings();
+      displayUserPastBookings();
   })
 }
 
@@ -77,7 +79,8 @@ function displayUserPastBookings() {
   navBar.classList.add('hidden')
   dashboard.classList.add('hidden')
   previousBookingsPage.classList.remove('hidden');
-  previousBookingsPage.innerHTML = `<p class='past-bookings-info'> ${ mapBookings(customer.pastBookings) }</p >`
+  previousBookingsPage.innerHTML = `<p> ${ mapBookings(customer.pastBookings) }</p >`
+  
 
 };
 

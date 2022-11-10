@@ -104,9 +104,9 @@ box-shadow: 10px 10px 5px #888888;
 .past-bookings, .future-bookings {
 display: flex;
 flex-direction: column;
-flex-wrap: wrap;
-align-content: space-around;
-justify-content: flex-start;
+align-content: flex-start;
+align-items: center;
+justify-content: flex-end;
 align-items: center;
 width:30vw;
 height: 40vh;
