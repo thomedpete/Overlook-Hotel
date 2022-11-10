@@ -18,7 +18,9 @@ const calenderForBookingCont = document.getElementById('calanderForBookingContai
 const pastFutureBookings = document.getElementById('pastFutureBookings');
 const futureBookings = document.getElementById('futureBookings');
 const previousBookings = document.getElementById('pastBookings');
-const previousBookingsTable = document.getElementById('table-past-bookings');
+const previousBookingsPage = document.getElementById('previousBookingsPage');
+const navBar= document.getElementById('navBar');
+const dashboard = document.getElementById('dashBoard');
 
 let customerData;
 let bookingData;
@@ -54,8 +56,8 @@ window.addEventListener('load', getUpdatedPromiseData);
 function mapBookings(bookingsArray) {
   let mappedBookings = ''
   mappedBookings = bookingsArray.map((booking) => {
-    return `Date: ${booking.date} <br />
-        Room Number: ${booking.roomNumber} <br />`
+    return `<p class='past-booking-info'> Date: ${booking.date}  <br />
+       Room Number: ${booking.roomNumber} <br /> </p>`
   }).join('')
   return mappedBookings
 }
@@ -72,9 +74,10 @@ function displayUserFutureBookings() {
 };
 
 function displayUserPastBookings() {
-  // previousBookings.innerHTML = `<p class='past-bookings-info'> ${ mapBookings(customer.pastBookings) }</p >`
-  // past.forEach(booking => {
-  //   previousBookingsTable.innerHTML += `<tr><td>${booking}</td></tr>`
-// });
+  navBar.classList.add('hidden')
+  dashboard.classList.add('hidden')
+  previousBookingsPage.classList.remove('hidden');
+  previousBookingsPage.innerHTML = `<p class='past-bookings-info'> ${ mapBookings(customer.pastBookings) }</p >`
+
 };
 
