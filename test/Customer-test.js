@@ -7,10 +7,10 @@ describe('Customer', () => {
   let newCustomer;
 
   beforeEach(() => {
-    newCustomer = new Customer()
+  
   });
 
-  it('should return true', function () {
-    expect(true).to.equal(true);
+  it.skip('should be a function', () => {
+    expect(Customer).to.be.a('function');
   });
 });

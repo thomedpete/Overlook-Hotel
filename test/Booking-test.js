@@ -4,7 +4,8 @@ import Booking from '../src/classes/Booking';
 import { user1, user2, roomsArray, bookingsArray } from '../src/test-data/test-data';
 
 describe('Booking', function() {
-  it('should return true', function() {
-    expect(true).to.equal(true);
+  
+  it('should be a function', () =>  {
+    expect(Booking).to.be.a('function');
   });
 });
