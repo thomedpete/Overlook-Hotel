@@ -49,7 +49,7 @@ function getUpdatedPromiseData() {
     totalMoneySpent = customer.returnTotalMoneySpent(roomData);
     displayUserName();
     displayUserFutureBookings();
-      displayUserPastBookings();
+    // displayUserPastBookings();
   })
 }
 
@@ -79,8 +79,22 @@ function displayUserPastBookings() {
   navBar.classList.add('hidden')
   dashboard.classList.add('hidden')
   previousBookingsPage.classList.remove('hidden');
-  previousBookingsPage.innerHTML = `<p> ${ mapBookings(customer.pastBookings) }</p >`
+  previousBookingsPage.innerHTML += `<p> ${ mapBookings(customer.pastBookings) }</p >`
   
 
 };
+
+const confirmBookingPost = (dateAndRoomNumber) => {
+  const booking = hotel.makeBookingObj({ id: customer.id, date: dateAndRoomNumber.date, roomNumber: dateAndRoomNumber.roomNumber });
+  postBooking(booking)
+    .then(data => {
+      refreshCustomerAndHotel(bookedMessage)
+    })
+    .catch(error => {
+      hideOff([document.getElementById('bookingError')])
+      setError(document.getElementById('bookingError'))
+      document.getElementById('bookingError').innerHTML = `<i class="fa-solid fa-x"></i> ${error}`;
+    });
+
+}
 
