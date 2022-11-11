@@ -4,10 +4,11 @@ import Hotel from '../src/classes/Hotel';
 import { user1, user2, roomsArray, bookingsArray } from '../src/test-data/test-data';
 
 describe('Hotel', () => {
-  let newHotel; 
+  let newHotel, hotelInfo; 
 
   beforeEach(() => {
-  
+    hotelInfo = { allRooms: roomsArray, allBookings: bookingsArray }
+    newHotel = new Hotel(hotelInfo)
   });
 
   it('should be a function', () => {
@@ -18,19 +19,28 @@ describe('Hotel', () => {
     expect(newHotel).to.be.an.instanceOf(Hotel);
   });
 
-  it('should ', () => {
-  
-    expect().to.equal()
+  it('Should have an array of all the rooms', () => {
+    expect(newHotel.allRooms).to.deep.equal(roomsArray);
   });
 
-  it('should ', () => {
-    expect().to.equal()
-    expect().to.equal()
+  it('Should have an array of all the bookings', () => {
+    expect(newHotel.allBookings).to.deep.equal(bookingsArray);
   });
 
-  it('should ', () => {
-    expect().toequal()
+  it('Should update all unavailable rooms from the Hotel unavailableRooms prop ', () => {
+    const unavailableRooms = newHotel.returnAvailableAndBookedRooms('2022/04/22').unavailableRooms;
+    expect(unavailableRooms).to.deep.equal([
+    {
+    "bedSize": "full",
+    "bidet": false,
+    "costPerNight": 294.56,
+    "numBeds": 1,
+    "number": 15,
+   "roomType": "residential suite",
+    }
+    ]);
   });
+
 
   it('should ', () => {
     expect().to.deep.equal();
