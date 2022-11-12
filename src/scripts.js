@@ -16,6 +16,13 @@ const userWelcome = document.getElementById('userWelcome');
 const userDashBoardLabel = document.getElementById('dashboardLabel');
 const calenderForBookingCont = document.getElementById('calanderForBookingContainer');
 const pastFutureBookings = document.getElementById('pastFutureBookings');
+const futureBookings = document.getElementById('futureBookings');
+const previousBookings = document.getElementById('pastBookings');
+const previousBookingsPage = document.getElementById('previousBookingsPage');
+const navBar= document.getElementById('navBar');
+const dashboard = document.getElementById('dashBoard');
+const dashboardReturn = document.getElementById('backToDashboard');
+
 
 let customerData;
 let bookingData;
@@ -31,7 +38,7 @@ function getUpdatedPromiseData() {
     customerData = data[0].customers;
     bookingData = data[1].bookings;
     roomData = data[2].rooms;
-    customer = new Customer(customerData[16]);
+    customer = new Customer(customerData[8]);
     customer.totalMoneySpent = 0;
     customer.pastBookings = [];
     customer.upcomingBookings = [];
@@ -42,6 +49,7 @@ function getUpdatedPromiseData() {
     totalMoneySpent = customer.returnTotalMoneySpent(roomData);
     displayUserName();
     displayUserFutureBookings();
+    // displayUserPastBookings();
   })
 }
 
@@ -50,8 +58,8 @@ window.addEventListener('load', getUpdatedPromiseData);
 function mapBookings(bookingsArray) {
   let mappedBookings = ''
   mappedBookings = bookingsArray.map((booking) => {
-    return `Date: ${booking.date} <br />
-        Room Number: ${booking.roomNumber} <br />`
+    return `<p class='past-booking-info'> Date: ${booking.date}  <br />
+       Room Number: ${booking.roomNumber} <br /> </p>`
   }).join('')
   return mappedBookings
 }
@@ -64,5 +72,29 @@ function displayUserName() {
 
 function displayUserFutureBookings() {
  let future = mapBookings(upcomingBookings)
-  pastFutureBookings.innerHTML = `${future}`
+  futureBookings.innerHTML += `${future}`
 };
+
+function displayUserPastBookings() {
+  navBar.classList.add('hidden')
+  dashboard.classList.add('hidden')
+  previousBookingsPage.classList.remove('hidden');
+  previousBookingsPage.innerHTML += `<p> ${ mapBookings(customer.pastBookings) }</p >`
+  
+
+};
+
+const confirmBookingPost = (dateAndRoomNumber) => {
+  const booking = hotel.makeBookingObj({ id: customer.id, date: dateAndRoomNumber.date, roomNumber: dateAndRoomNumber.roomNumber });
+  postBooking(booking)
+    .then(data => {
+      refreshCustomerAndHotel(bookedMessage)
+    })
+    .catch(error => {
+      hideOff([document.getElementById('bookingError')])
+      setError(document.getElementById('bookingError'))
+      document.getElementById('bookingError').innerHTML = `<i class="fa-solid fa-x"></i> ${error}`;
+    });
+
+}
+
