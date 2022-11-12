@@ -83,20 +83,32 @@ align-items: center;
 }
 
 .past-future-bookings {
-  display: flex;
+display: flex;
   flex-direction: column;
-  align-content: center;
+  align-content: space-around;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
   flex-wrap: wrap;
-  width: 55vw;
-  height: 31vh;
-  background-color: rgb(177, 226, 43);
+  width: 62vw;
+  height: 40vh;
+background: radial-gradient(circle, #A997DF 0%, #FFC857 100%);
   box-shadow: 10px 10px 5px #888888;
 }
+.past-bookings, .future-bookings {
+display: flex;
+flex-direction: column;
+flex-wrap: wrap;
+align-content: space-around;
+justify-content: flex-start;
+align-items: center;
+width:30vw;
+height: 40vh;
+border: 3px solid #E5323B;
+box-shadow: 10px 10px 5px #888888;
+}
 
-.past-upcoming-label {
-  font-size: 32px;
+.past-label, .future-label {
+  font-size: 25px;
 }
 
 .calander-for-booking-container { 
