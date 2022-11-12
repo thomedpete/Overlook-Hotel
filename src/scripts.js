@@ -8,6 +8,7 @@ import './images/eye-logo.png'
 import Customer from './classes/Customer';
 import Booking from './classes/Booking';
 import Room from './classes/Room';
+import Hotel from './classes/Hotel';
 
 import { fetchData, getPromiseData } from './apiCalls'
 
@@ -22,6 +23,8 @@ const previousBookingsPage = document.getElementById('previousBookingsPage');
 const navBar= document.getElementById('navBar');
 const dashboard = document.getElementById('dashBoard');
 const dashboardReturn = document.getElementById('backToDashboard');
+const showAllPastButton = document.getElementById('showAllPast');
+const showAllFutureButton = document.getElementById('showAllFuture');
 
 
 let customerData;
@@ -31,29 +34,33 @@ let customer;
 let pastBookings;
 let totalMoneySpent;
 let upcomingBookings;
+let hotel;
 
 
-function getUpdatedPromiseData() {
-  Promise.all([fetchData('customers'), fetchData('bookings'), fetchData('rooms')]).then(data => {
-    customerData = data[0].customers;
-    bookingData = data[1].bookings;
-    roomData = data[2].rooms;
-    customer = new Customer(customerData[8]);
-    customer.totalMoneySpent = 0;
-    customer.pastBookings = [];
-    customer.upcomingBookings = [];
-    customer.bookedRooms = [];
-    customer.checkAllBookings(bookingData);
-    pastBookings = customer.pastBookings;
-    upcomingBookings = customer.futureBookings;
-    totalMoneySpent = customer.returnTotalMoneySpent(roomData);
-    displayUserName();
-    displayUserFutureBookings();
-    // displayUserPastBookings();
-  })
-}
 
-window.addEventListener('load', getUpdatedPromiseData);
+//~~Event Listeners~~
+// window.addEventListener('load', );
+
+//~~Helper Functions~~
+const hide = (elements) => elements.forEach(element => element.classList.add('hidden'));
+const show = (elements) => elements.forEach(element => element.classList.remove('hidden'));
+const bookedMessage = `<h1>The Overlook at Mordor awaits your arival, the room is booked!</h1>`
+const canceledMessage = `<h1>The Overlook at Mordor hopes to see you soon, the room is cancled!</h1>`
+const returnCurrentDate = () => {
+  let year = new Date().getFullYear().toString();
+  let month = (new Date().getMonth() + 1).toString();
+  let date = new Date().getDate().toString();
+  month = month.length === 1 ? 0 + month : month;
+  date = date.length === 1 ? 0 + date : date;
+  return `${year}/${month}/${date}`;
+};
+
+const makeDateDisplay = (date) => {
+  const dateNumbers = date.split("/");
+  const year = dateNumbers.shift();
+  dateNumbers.push(year);
+  return dateNumbers.join('/');
+};
 
 function mapBookings(bookingsArray) {
   let mappedBookings = ''
@@ -76,13 +83,30 @@ function displayUserFutureBookings() {
 };
 
 function displayUserPastBookings() {
-  navBar.classList.add('hidden')
-  dashboard.classList.add('hidden')
-  previousBookingsPage.classList.remove('hidden');
+  hide([navBar,dashboard]);
+  show([previousBookingsPage])
   previousBookingsPage.innerHTML += `<p> ${ mapBookings(customer.pastBookings) }</p >`
   
 
 };
+
+const refreshCustomerAndHotel = (statusMessage) => {
+  Promise.all([getFetch(`customers/${customer.id}`), getFetch('bookings')])
+    .then(data => {
+      customer = new Customer({ customer: data[0], allBookings: data[1].bookings });
+      hotel = new Hotel({ allRooms: hotel.allRooms, allBookings: data[1].bookings });
+      show([]);
+      hide([]);
+      null.innerHTML = ``
+    })
+    .catch(error => {
+      dashboardSectionCustomer.innerHTML = (`
+           
+            <h1 class="heading">Sorry, it looks like something went wrong reloading the page. Error: ${error}</h1>
+            `)
+    });
+
+}
 
 const confirmBookingPost = (dateAndRoomNumber) => {
   const booking = hotel.makeBookingObj({ id: customer.id, date: dateAndRoomNumber.date, roomNumber: dateAndRoomNumber.roomNumber });
@@ -91,10 +115,10 @@ const confirmBookingPost = (dateAndRoomNumber) => {
       refreshCustomerAndHotel(bookedMessage)
     })
     .catch(error => {
-      hideOff([document.getElementById('bookingError')])
-      setError(document.getElementById('bookingError'))
-      document.getElementById('bookingError').innerHTML = `<i class="fa-solid fa-x"></i> ${error}`;
+  
+      userDashBoardLabel.innerText = `${error}`;
     });
 
 }
+
 
