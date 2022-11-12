@@ -123,6 +123,18 @@ box-shadow: 10px 10px 5px #888888;
   color: #0f0f0f;
   box-shadow: 10px 10px 5px #888888;
 }
+
+  .all-future-bookings {
+    display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-content: flex-start;
+      justify-content: space-evenly;
+      width: 100vw;
+      height: 100vh;
+      background-color: #024f8a;
+  }
+
 .all-past-bookings {
   display: flex;
   flex-direction: row;

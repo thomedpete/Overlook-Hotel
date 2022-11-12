@@ -28,6 +28,7 @@ const dashBoard = document.getElementById('dashBoard');
 const dashboardReturn = document.getElementById('backToDashboard');
 const showAllPastButton = document.getElementById('showAllPast');
 const showAllFutureButton = document.getElementById('showAllFuture');
+const allFutureBookingsPage = document.getElementById('allFutureBookingsPage'); 
 
 
 let customerData;
@@ -60,11 +61,25 @@ const getPromiseData = () => {
     customer = new Customer({ customer: customer, allBookings: bookingData });
     hotel = new Hotel({ allRooms: roomData, allBookings: bookingData });
     displayUserName();
-
+    // createFutureBookingsBox();
   })
 };
-
+const createFutureBookingsBox = () => {
+  hide([dashBoard, navBar]);
+  show([allFutureBookingsPage])
+  customer.futureBookings.forEach(booking => {
+      allFutureBookingsPage.innerHTML += (`
+                <article class="customer-booking-article future-bookings" id="${booking.id}">
+                    <p class="booking-info">ID: ${booking.id}</p>
+                    <p class="booking-info">Date: ${makeDateDisplay(booking.date)}</p>
+                    <p class="booking-info">Room Number: ${booking.roomNumber}</p>
+                    <button class="cancel-btn" id="${booking.id}" data-bookingID="${booking.id}">Cancel</button>
+                </article>
+            `);
+  });
+}
   window.addEventListener('load', getPromiseData);
+showAllFutureButton.addEventListener('click',createFutureBookingsBox);
 //~~Event Listeners~~
 
 calenderSubmitButton.addEventListener('click', (event) => {
@@ -103,28 +118,15 @@ function mapBookings(bookingsArray) {
   }).join('')
   return mappedBookings
 }
-  const totalRewardPoints = () => {
-    userRewardsPoints.innerHTML += `<p class="amount-spent">$${customer.returnTotalSpent(hotel.allRooms)}</p>`
-  }
+
 function displayUserName() {
   userWelcome.innerText = `Welcome, ${customer.name} you have spent $${customer.returnTotalSpent(hotel.allRooms)} this pleases our Dark Lord! `
   let firstName = customer.name.split(' ')[0]
   userDashBoardLabel.innerText = `${firstName}'s Dashboard `
-  // totalRewardPoints();
+
 };
 
-// const createFutureBookingsBox = () => {
-//   customer.futureBookings.forEach(booking => {
-//     document.getElementById('futureBookings').innerHTML += (`
-//                 <article class="customer-booking-article" id="${booking.id}">
-//                     <p class="booking-info">ID: ${booking.id}</p>
-//                     <p class="booking-info">Date: ${makeDateDisplay(booking.date)}</p>
-//                     <p class="booking-info">Room Number: ${booking.roomNumber}</p>
-//                     <button class="cancel-btn" id="${booking.id}" data-bookingID="${booking.id}">Cancel</button>
-//                 </article>
-//             `);
-//   });
-// }
+
 
 
 
