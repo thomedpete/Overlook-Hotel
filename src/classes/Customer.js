@@ -1,53 +1,38 @@
 class Customer {
-  constructor(customerData) {
-    this.id = customerData.id
-    this.name = customerData.name
-    this.pastBookings = []
-    this.futureBookings = []
-    this.bookedRooms = []
-    this.totalMoneySpent = 0
+  constructor(customerDataAndAllBookings) {
+    this.id = customerDataAndAllBookings.customer.id;
+    this.name = customerDataAndAllBookings.customer.name;
+    this.futureBookings = this.returnPastAndFutureBookings(customerDataAndAllBookings.allBookings).futureBookings;
+    this.pastBookings = this.returnPastAndFutureBookings(customerDataAndAllBookings.allBookings).pastBookings;
   }
   
-  checkAllBookings(bookingsArray) {
-    let filterByUserBookings = bookingsArray.filter((element) => {
-      return this.id === element.userID
-    });
-    let compDay;
-    let today = new Date().toJSON().slice(0, 10);
-    filterByUserBookings.forEach((booking) => {
-      let bookingDate = booking.date;
-      let formatDates = bookingDate.split('/').join('-');
-      compDay = new Date(formatDates).toJSON().slice(0, 10);
-      if (today >= compDay) { 
-        this.pastBookings.push(booking) 
-      } else if (today < compDay) { 
-        this.futureBookings.push(booking) 
-      };
-    });
+  returnPastAndFutureBookings(allBookings) {
+    const getTodaysDate = () => {
+      let year = new Date().getFullYear().toString();
+      let month = (new Date().getMonth() + 1).toString();
+      let date = new Date().getDate().toString();
+      month = month.length === 1 ? 0 + month : month;
+      date = date.length === 1 ? 0 + date : date;
+
+      return `${year}/${month}/${date}`;
+    }
+    return {
+      futureBookings: allBookings.filter(booking => booking.date >= getTodaysDate() && booking.userID === this.id)
+        .reverse(),
+      pastBookings: allBookings.filter(booking => booking.date < getTodaysDate() && booking.userID === this.id)
+    };
   }
-  returnTotalMoneySpent(roomsArray) {
-    let pastRoomNumbers = this.pastBookings.map((booking) => { 
-      return  booking.roomNumber
-    });
-    roomsArray.forEach((room) => {
-      if (pastRoomNumbers.includes(room.number)) {
-        this.bookedRooms.push(room)
-      }
-    });
-    let futureRoomNumbers = this.futureBookings.map((booking) => { 
-      return  booking.roomNumber
-    });
-    roomsArray.forEach((room) => {
-      if (futureRoomNumbers.includes(room.number)) {
-        this.bookedRooms.push(room)
-      }
-    })
-    let totalCost = this.bookedRooms.reduce((acc, room) => {
-      return acc += room.costPerNight
-    }, 0)
-    this.totalMoneySpent = totalCost
-    return totalCost
-  };
+
+  returnTotalSpent(roomsArray) {
+    const roomNumbers = this.pastBookings.map(booking => booking.roomNumber);
+    const total = roomsArray.filter(room => roomNumbers.includes(room.number))
+      .reduce((total, room) => {
+        total += room.costPerNight;
+        return total;
+      }, 0)
+
+    return Number(total.toFixed(2));
+  }
 };
 
 
