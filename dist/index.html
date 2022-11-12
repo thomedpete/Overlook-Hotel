@@ -5,25 +5,51 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel='icon' href='./images/overlook logo.png'>
-  <title>OverLook</title>
+  <link rel="icon" href="./images/eye-logo.png">
+  <title>Overlook Hotel</title>
 </head>
 
 <body>
-  <section class="log-in-page hidden" id="logInPage">This is the log in page</section>
+  <section class="log-in-page hidden " id="logInPage">
+    <form action="" method="get" class="form-example">
+      <div class="login-form username">
+        <label for="name">Enter your username: </label>
+        <input type="text" name="name" id="name" required>
+      </div>
+      <div class="login-form password">
+        <label for="email">Enter your password: </label>
+        <input type="email" name="email" id="email" required>
+      </div>
+      <div class="login-submit-button">
+        <input type="submit" value="Log In!">
+      </div>
+    </form>
+    <img src="./images/theOverlook.png" class="login-logo" alt="a view of the Overlook Hotel in Mordor">
+  </section>
+
   <!-- <img src="./images/turing-logo.png" alt="turing logo"> -->
   <nav class="navigation-bar" id="navBar">
-    <h1>This Is the nav Bar</h1>
+    <h1>Overlook Hotel</h1>
+    <p class="user-welcome" id="userWelcome">Welcome User</p>
+    <img src="./images/eye-logo.png" class="nav-logo" alt="eye of sauron ">
   </nav>
+
   <section class="dashboard" id="dashBoard">
-    <h2>this is the dashboard</h2>
+    
+    <h2 id="dashboardLabel">Guest Dashboard</h2>
+   
+    <section class="calander-for-booking-container" id="calanderForBookingContainer"> 
+      <h3>Book while you can!</h3>
+      <label class="calender-label" for="start">Select a date!:</label>
+      <input class="calender" type="date" id="start" name="trip-start" value="2022-10-27" min="2022-10-27" max="2030-12-31" tabindex="0">
+    </section>
 
     <section class="past-future-bookings" id="pastFutureBookings">
-      <p>Past and Upcoming Room Bookings</p>
+      <p class="past-upcoming-label">Past and Upcoming Room Bookings</p>
     </section>
-    <section class="calander-for-booking"> <label for="start">Book a Room:</label>
-      <input type="date" id="start" name="trip-start" value="2022-10-27" min="2022-10-27" max="2030-12-31">
-    </section>
+
+    <img src="./images/helpfulFrontDesk.png" class="friendly-staff" alt="front desk orcs helping guests">
+
   </section>
   <!-- Do not include the scripts.js or class files here - it is done by the webpack server -->
   <script src="bundle.js"></script>
