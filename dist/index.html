@@ -50,22 +50,24 @@
     <section class="past-future-bookings">
       <section class="future-bookings" id="futureBookings">
         <p class="future-label">Future Room Bookings</p>
+        <article class="most-recent-booking" id="mostRecentBookings"></article>
         <button class="show-all-future" id="showAllFuture">Show All</button>
       </section>
    
       <section class="past-bookings" id="pastBookings">
-        <p class="past-label">Previous Room Bookings</p>
+        <p class="past-label">Most Recent Past Room Bookings</p>
+        <article class="most-recent-past-booking" scrolling="auto" id="mostRecentPastBookings"></article>
         <button class="show-all-past" id="showAllPast">Show All</button>
 
       </section>
     </section>
-    <img src="./images/helpfulFrontDesk.png" class="friendly-staff" alt="front desk orcs helping guests">
+    <img src="./images/helpfulFrontDesk.png" class="friendly-staff hidden" alt="front desk orcs helping guests">
 
   </section>
 <section class="all-future-bookings hidden" id="allFutureBookingsPage">
 </section>
   <section class="all-past-bookings hidden" id="previousBookingsPage">
-    <button class="return-to-dash-board">Return To Dashboard</button> <br>
+    <button class="return-to-dash-board" id="returnToDash">Return To Dashboard</button> <br>
   </section>
 
   <script src="bundle.js"></script>
