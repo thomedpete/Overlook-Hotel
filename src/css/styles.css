@@ -74,7 +74,6 @@ justify-content: flex-start;
 width: 100vw;
 height: 80vh;
 background: radial-gradient(circle, #A997DF 0%, #FFC857 100%);
-box-shadow: 10px 10px 5px #888888;
 align-items: center;
 }
 
@@ -98,7 +97,6 @@ align-items: center;
       height: 60vh;
       margin-top: -11vh;
       background: radial-gradient(circle, #A997DF 0%, #FFC857 100%);
-      box-shadow: 10px 10px 5px #888888;
       flex-wrap: wrap;
 }
 
@@ -171,6 +169,7 @@ box-shadow: 10px 10px 5px #888888;
   color: antiquewhite;
     margin: 2vh;
     font-size: 17px;
+
 }
 
 .all-past-bookings {
@@ -205,7 +204,15 @@ box-shadow: 10px 10px 5px #888888;
       align-content: center;
 }
 
+.avalible-rooms {
+  background-color: #fff9a3;
+  width:100%;
+  height: 100%;
+}
 
+.dashboard-recent-bookings {
+  padding:5px;
+}
 
 .past-booking-info {
   width: 10vw;

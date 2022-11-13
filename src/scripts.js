@@ -32,6 +32,7 @@ const allFutureBookingsPage = document.getElementById('allFutureBookingsPage');
 const mostRecentBookings = document.getElementById('mostRecentBookings');
 const mostRecentPastBookings = document.getElementById('mostRecentPastBookings');
 const returnToDash = document.getElementById('returnToDash');
+const avalibleRoomsByDate = document.getElementById('avalibleRooms');
 let customerData;
 let bookingData;
 let roomData;
@@ -138,7 +139,8 @@ returnToDash.addEventListener('click', dashReturnRefresh);
 calenderSubmitButton.addEventListener('click', (event) => {
   let selectedDate = actualCalender.value
   makeDateDisplay(selectedDate);
-  console.log('does anything work?')
+  displayAvailableRoomsManager(makeDateDisplay(selectedDate))
+console.log(makeDateDisplay(selectedDate))
 });
 
 
@@ -177,10 +179,60 @@ function displayUserName() {
   userWelcome.innerText = `Welcome, ${customer.name} you have spent $${customer.returnTotalSpent(hotel.allRooms)} this pleases our Dark Lord! `
   let firstName = customer.name.split(' ')[0]
   userDashBoardLabel.innerText = `${firstName}'s Dashboard `
-
 };
 
+const displayAvailableUnfilteredRooms = () => {
+ avalibleRoomsByDate.innerHTML += (`
+            <h1 class="heading available-room-heading" id="roomPickerHeading">Here are all available rooms for ${makeDateDisplay(roomsDateAndElement.date)}.</h1>
+            <form class="form-filter" id="filterRooms">
+                <label class="search-label-filter" for="room-type">Filter rooms by type: 
+                    <select class="room-type-select" id="filterRoomChoice" name="room-type">
+                        <option class="room-type-option" value="">All Available</option>
+                        <option class="room-type-option" value="residential suite">Residential Suite</option>
+                        <option class="room-type-option" value="suite">Suite</option>
+                        <option class="room-type-option" value="single room">Single Room</option>
+                        <option class="room-type-option" value="junior suite">Junior Suite</option>
+                    </select> 
+                </label>
+                <input class="search-btn-filter" id="roomFilterBtn" type="button" value="Filter" data-date="${roomsDateAndElement.date}">
+            </form>
+            <section class="available-room-section" id="availableRoomSection"></section>
+        `)
+  displayRoomsAndDetails({ rooms: roomsDateAndElement.rooms, date: roomsDateAndElement.date, element: 'availableRoomSection' })
 
+}
+
+const displayRoomsAndDetails = (roomsDateAndElementID) => {
+ avalibleRoomsByDate.innerHTML = '';
+  roomsDateAndElementID.rooms.forEach((room, i) => {
+    const hasBidet = room.bidet ? 'Has a bidet' : 'Doesn\'t have a bidet';
+    avalibleRoomsByDate.innerHTML += (`
+            <article class="room-wrapper ${room.roomType.split(' ').join('-')}" id="room${room.number}">
+                <p class="room-filter-info">${makeUpperCase(room.roomType)}</p>
+                <ul class="list">
+                    <li class="room-filter-info">Room number ${room.number}</li>
+                    <li class="room-filter-info">${makeUpperCase(room.bedSize)} bed</li>
+                    <li class="room-filter-info">${room.numBeds} bed(s)</li>
+                    <li class="room-filter-info">${hasBidet}</li>
+                    <li class="room-filter-info">$${room.costPerNight} per night</li> 
+                </ul>
+                <button class="book-btn" id="selectRoomBtn${room.number}" data-date="${roomsDateAndElementID.date}" data-roomNumber="${room.number}">Book</button>
+            </article>
+        `);
+  });
+
+}
+
+const displayAvailableRoomsManager = (date) => {
+  const availableRooms = hotel.returnAvailableAndBookedRooms(date).availableRooms
+  if (!availableRooms.length) {
+    avalibleRoomsByDate.innerHTML = ('<h1 class="heading-no-rooms">We\'re so sorry. Looks like we are all booked up for this night.</h1>');
+  } else {
+    avalibleRoomsByDate.innerHTML = "";
+    displayAvailableUnfilteredRooms({ rooms: availableRooms, date: date, element: document.getElementById('availableRoomSectionManager') });
+  }
+
+}
 
 
 
