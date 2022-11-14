@@ -35,7 +35,7 @@ body {
   width: 90vh;
   height: 90vh;
   margin-top: 40px;
-  background-image: url('//tolkiengateway.net/w/images/e/e0/Ted_Nasmith_-_Across_Gorgoroth.jpg');
+  background-image: url(/src/images/theOverlook.png);
   background-repeat: no-repeat;
   background-size: 90vh;
   border-radius: 20px;
