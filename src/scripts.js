@@ -20,7 +20,7 @@ const bookRoomSectionCustomer = document.querySelector('#bookRoomSectionCustomer
 let customer;
 let hotel;
 const cancelMessage = '<h1>Your booking has been canceled.</h1><p>We are sorry you can\'t make it our mighty father will be displeased.</p>';
-const bookedMessage = '<h1></></i> Your room has been booked!</h1><p>Lord Sauron awaits your arival.</p>';
+const bookedMessage = '<h1></></i> Your room has been booked!</h1><p>Lord Sauron awaits your arrival.</p>';
 
 //~~ HELPER FUNCTIONS ~~
 
@@ -139,7 +139,7 @@ const showSelectBooking = (bookingIDAndRoom) => {
             <button class="nav-btn" id="bookRoomBtn"> Book a Room</button>
         </nav>
         <div class="room-display-wrapper" id="roomDisplayWrapper">
-            <h1 class="heading">A Beautiful ${makeUpperCase(bookingIDAndRoom.selectedRoom.roomType)}</h1>
+            <h1 class="heading">An Intimidating ${makeUpperCase(bookingIDAndRoom.selectedRoom.roomType)}</h1>
             <article class='room-pic'></article>
             <p class="information">Cost Per Night: $${bookingIDAndRoom.selectedRoom.costPerNight}</p>
             <ul class="list">
@@ -174,7 +174,7 @@ const cancelBookingAndShowResponse = (bookingID) => {
   cancelBooking(bookingID)
     .then(response => {
       if (!response.ok) {
-        throw 'Oops, looks like something went wrong. Please try agian.'
+        throw 'Something went wrong. Please try agian.'
       } else {
         refresPromise(cancelMessage);
       }
@@ -341,47 +341,7 @@ const loginAsCustomer = (loginNum) => {
 }
 
 /* EVENT LISTENERS */
-window.addEventListener('load', () => {
-  show([loginSection]);
-  loginSection.innerHTML = (` 
-        <div class="login-wrapper" id="loginWrapper">
-            <h1 class="heading login-heading">Welcome to The Overlook</h1>
-            <p class='sub-heading'>mannaged by oneRing LLC</p>
-            <p class="login-description" id="loginDescription">Please sign in.</p>
-            <form class="login-form">
-                <div class="login-name-wrapper">
-                    <label class='login-label' for="login-name">Login Name: </label>
-                    <input class="login-name-input" id="loginName" type="text" name="login-name" placeholder="Login Name">
-                </div>
-                <div class="password-wrapper">
-                    <label class='login-label' for="password">Password: </label>
-                    <input class="password-input" id="password" type="password" name="password" placeholder="Password">
-                </div>
-                <input class="login-submit-btn" id="loginSubmitBtn" type="submit" value="Login"> 
-            <form>
-        </div>
-    `);
-
-});
-
-loginSection.addEventListener('click', (event) => {
-  if (event.target.id === 'loginSubmitBtn') {
-    event.preventDefault();
-    const loginName = document.querySelector('#loginName').value;
-    const password = document.querySelector('#password').value;
-    const loginDescription = document.querySelector('#loginDescription');
-    if (!loginName.length || !password.length) {
-      loginDescription.innerHTML = 'Please enter your login name and password.';
-      setError(loginDescription);
-    } else if (password === 'overlook2021' && loginName.includes('customer') && loginName.replace('customer', '') <= 50 && loginName.replace('customer', '').length > 0) {
-      loginAsCustomer(loginName.replace('customer', ''));
-    } else {
-      loginDescription.innerHTML = 'Invalid login credentials.';
-      setError(loginDescription);
-    }
-  }
-
-});
+window.addEventListener('load', loginAsCustomer(4))
 
 dashboardSectionCustomer.addEventListener('click', (event) => {
   if (event.target.getAttribute('data-bookingID')) {
