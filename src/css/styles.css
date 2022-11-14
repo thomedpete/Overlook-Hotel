@@ -81,7 +81,7 @@ body {
 
 .login-submit-btn:hover {
   cursor: pointer;
-  background: #A09D00;
+  background: #E1DAAE;
   border: 0.07rem solid #A09D00;
 }
 
@@ -135,7 +135,7 @@ body {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  height: 166px;
+  height: 130px;
   margin: 100px 0px 9px 0px;
   padding: 20px;
   background-color: #848FA2;
@@ -188,7 +188,7 @@ body {
 
 .booking-detail-btn:hover {
   cursor: pointer;
-  background: #A09D00;
+  background: #058ED9;
   border: 0.07rem solid #A09D00;
 }
 
@@ -367,197 +367,8 @@ body {
   border: 0.07rem solid #34526E;
 }
 
-.dashboard-section-manager {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100vw;
-}
-
-.manager-heading-wrapper {
-  width: 75%;
-  margin-top: 150px;
-  padding: 10px 0px 10px 0px;
-  background: #A09D00;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
-}
-
-.heading-two-stats {
-  text-align: center;
-  width: 100%;
-  padding: 10px 0px 10px 0px;
-  background: #34526E;
-  color: #F1EFE9;
-}
-
-.daily-stats-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 75%;
-  background: #F1EFE9;
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
-}
-
-.stats-info {
-  text-align: left;
-  width: 90%;
-  padding: 20px;
-  font-size: large;
-}
-
-.customer-search-heading {
-  text-align: center;
-  width: 75%;
-  margin-top: 150px;
-  background: #A09D00;
-  padding: 20px 0px 10px 5px;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
-}
-
-.search-customer-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 75%;
-  background: #F1EFE9;
-  padding: 20px 0px 10px 5px;
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
-}
-
-.search-input {
-  margin-bottom: 8px;
-  margin-bottom: 20px;
-  padding: 5px;
-  border: 0.07rem solid #232323;
-  border-radius: 10px;
-}
-
-.search-btn {
-  margin-bottom: 20px;
-}
-
-.no-customer-found {
-  text-align: center;
-}
-
-.customer-info-heading {
-  text-align: center;
-  width: 75%;
-  margin-top: 150px;
-  margin-bottom: 30px;
-  padding: 20px 0 20px 0;
-  background: #F1EFE9;
-  border-radius: 20px;
-  border-radius: 20px;
-}
-
-.customer-date-wrapper {
-  text-align: center;
-  width: 75%;
-  margin-bottom: 20px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  background-color: #F1EFE9;
-  border-radius: 20px;
-}
-
-.customer-info {
-  padding-bottom: 10px;
-}
-
-.heading-manager-customer {
-  text-align: center;
-  width: 75%;
-  padding: 10px 0px;
-  background-color: #A09D00;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
-}
-
-.list-bookings-manager {
-  width: 75%;
-  margin-bottom: 30px;
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  grid-template-rows: auto;
-  background: #F1EFE9;
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
-}
-
-.make-booking-btn {
-  padding: 8px;
-  background: none;
-  border: 0.07rem solid #232323;
-  border-radius: 20px;
-}
-
-.make-booking-btn:hover {
-  cursor: pointer;
-  background: #34526E;
-  color: #F1EFE9;
-  border: 0.07rem solid #34526E;
-}
-
-.customer-booking-article {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 10px;
-  padding-bottom: 10px;
-  border: 0.07rem solid #232323;
-  border-radius: 10px;
-}
-
 .booking-info {
   padding: 5px;
-}
-
-.book-room-section-manager {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100vw;
-}
-
-.book-for-customer-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 150px;
-  width: 75%;
-  background: #F1EFE9;
-  border-radius: 20px;
-}
-
-.heading-no-rooms {
-  text-align: center;
-  width: 100%;
-  margin-top: 100px;
-  padding: 20px 0px;
-  background: #A09D00;
-  border-radius: 20px;
-}
-
-.manager-book-room-heading {
-  text-align: center;
-  margin: 20px 0px;
-  width: 100%;
-  padding: 10px 0px;
-  background: #F1EFE9;
-}
-
-.room-picker-manager-form {
-  margin-bottom: 20px;
-}
-
-.manager-display-available-rooms {
-  width: 75%;
 }
 
 .hidden {
