@@ -181,7 +181,6 @@ const cancelBookingAndShowResponse = (bookingID) => {
       } else {
         refresPromise(cancelMessage);
       }
-
     })
     .catch(error => {
       dashboardSectionCustomer.innerHTML += (`<p id="bookingError">${error}</p>`);
@@ -202,7 +201,7 @@ const bookRoomCustomer = () => {
             <p class="information pick-date-info">When will you Arrive?.</p>
             <form class="room-picker" id="roomPicker">
                 <label class="search-label" for="stay-date">Choose From The Calender!: </label>
-                <input class="search-input-calender" type="date" id="datePicker" name="stay-date" value="${getTodaysDate().split('/').join('-')}" min="${getTodaysDate().split('/').join('-')}" max="2024-01-01">
+                <input role='date-picker' aria-label='calendar' class="search-input-calender" type="date" id="datePicker" name="stay-date" value="${getTodaysDate().split('/').join('-')}" min="${getTodaysDate().split('/').join('-')}" max="2024-01-01">
                 <input class="find-btn" id="roomPickerBtn" type="submit" value="Find Rooms">
             </form>
         </section>
