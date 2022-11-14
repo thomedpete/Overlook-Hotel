@@ -1,13 +1,22 @@
 # Overlook Hotel
+This is a small hotel booking simulator set in sunny Mordor. It allows the user to login and make/cancle bookings.
+## Tech Used
+JavaScript
+HTML
+CSS
+Mocha
+Chai
+Webpack
+## Set-up/Install
+This application is built to run off of a server that you can run locally.
+The repo for the server can be found here: https://github.com/turingschool-examples/overlook-api
+Follow the direction provided in the repo to install the local server.
+When that is done, clone down this repo and run these commands:
+
+npm install
+npm start
+navigate to http://localhost:8080/ in you browser
 
 
-## Setup
 
 
-## Deploying to GitHub Pages
-
-_If you are finished with the functionality and testing of your project_, then you can consider deploying your project to the web! This way anyone can play it without cloning down your repo.
-
-[GitHub Pages](https://pages.github.com/) is a great way to deploy your project to the web. Don't worry about this until your project is free of bugs and well tested!
-
-If you _are_ done, you can follow [this procedure](./gh-pages-procedure.md) to get your project live on GitHub Pages.
