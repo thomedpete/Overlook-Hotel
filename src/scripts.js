@@ -3,11 +3,10 @@ import './images/overlookLogo.png'
 import './images/theOverlook.png'
 import './images/helpfulFrontDesk.png'
 import './images/eye-logo.png'
-import './css/style.css';
+import './css/styles.css';
 import Customer from './classes/Customer';
-import Manager from './classes/Manager';
 import Hotel from './classes/Hotel';
-import { getFetch, cancelBooking, postBooking } from './api-calls';
+import { getFetch, cancelBooking, postBooking } from './apiCalls';
 
 //~~ QUERY SELECTORS ~~
 
