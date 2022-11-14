@@ -83,21 +83,6 @@ const refresPromise = (statusMessage) => {
 
 }
 
-const refreshManagerHotelAndCustomers = (cancelOrConfirmed) => {
-  Promise.all([getFetch('customers'), getFetch('rooms'), getFetch('bookings')])
-    .then(data => {
-      manager = new Manager({ customers: data[0].customers, allBookings: data[2].bookings });
-      hotel = new Hotel({ allRooms: data[1].rooms, allBookings: data[2].bookings });
-      displayManagerDash();
-      document.getElementById('managerDashHeading').innerText = `${customer.name}'s booking is ${cancelOrConfirmed}.`
-      customer = null;
-    })
-    .catch(error => {
-      setError(document.getElementById('loginDescription'));
-      document.getElementById('loginDescription').innerHTML = ` Looks like something went wrong. Error: ${error}`
-    });
-
-}
 
 const buildBookings = (bookingsAndElementID) => {
   if (!bookingsAndElementID.bookings.length) {
