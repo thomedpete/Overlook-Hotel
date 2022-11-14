@@ -37,7 +37,7 @@ body {
   margin-top: 40px;
   background-image: url(/src/images/theOverlook.png);
   background-repeat: no-repeat;
-  background-size: 90vh;
+  background-size: 130vh;
   border-radius: 20px;
 }
 
@@ -48,18 +48,28 @@ body {
   margin-top: 8vh;
   width: 50vh;
   height: 50vh;
-  background-color: #F1EFE9;
+  background-color: #2D3142;
   opacity: 2;
-  border: 0.2rem solid #232323;
+  box-shadow: 10px 10px 5px #888888;
+  border: 0.2rem solid #FF934F;
   border-radius: 20px;
 }
 
 .login-heading {
   margin-top: 7vh;
+  color: antiquewhite;
+}
+
+.sub-heading {
+  font-size: 10px;
+  color: antiquewhite;
+  margin-top: -3vh;
+  margin-bottom: 8vh;
 }
 
 .login-description {
   padding-bottom: 10px;
+  color: antiquewhite;
 }
 
 .login-name-input,
@@ -68,6 +78,11 @@ body {
   padding: 10px;
   border: 0.07rem solid #232323;
   border-radius: 10px;
+  color: antiquewhite;
+}
+
+.login-label {
+  color: antiquewhite;
 }
 
 .login-submit-btn {
@@ -76,13 +91,14 @@ body {
   font-weight: bolder;
   border: 0.07rem solid #232323;
   border-radius: 20px;
-  background: none;
+  background: #848FA2;
+  color: antiquewhite;
 }
 
 .login-submit-btn:hover {
   cursor: pointer;
-  background: #E1DAAE;
-  border: 0.07rem solid #A09D00;
+  background: #FF934F;
+  border: 0.07rem solid;
 }
 
 .nav {
@@ -371,6 +387,7 @@ body {
   padding: 5px;
 }
 
+
 .hidden {
   display: none;
   width: 0px;
@@ -388,4 +405,3 @@ body {
 .junior-suite {
   background: #058ED9;
 }
-
