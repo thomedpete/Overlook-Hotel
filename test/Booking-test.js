@@ -1,7 +1,8 @@
 import chai from 'chai';
 const expect = chai.expect;
-import { bookings } from './test-data/booking-data';
+import { bookings } from '../src/test-data/allTestData'
 import Booking from '../src/classes/Booking'
+
 
 describe('Booking', () => {
     it('Should be a function', () => {

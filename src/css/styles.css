@@ -173,7 +173,7 @@ body {
   padding: 20px;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
-  background: #cecdc8;
+  background: #c4ebf4;
   box-shadow: 5px 5px 5px #888888;
 }
 
@@ -320,7 +320,7 @@ body {
   margin-top: 100px;
   margin-bottom: 0px;
   padding: 5px 5px;
-  background-color: #F1EFE9;
+  background-color: #848FA2;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }
@@ -578,14 +578,14 @@ body {
 }
 
 .suite {
-  background: #83cfc5;
+  background: #FF934F;
 }
 
 .residential-suite {
-  background: #a2a2a2;
+  background: #CC2D35;
 }
 
 .junior-suite {
-  background: #e0bd6c;
+  background: #058ED9;
 }
 
