@@ -105,8 +105,6 @@ const buildBookings = (bookingsAndElementID) => {
 
 }
 
-
-
 const displayCustomerDash = () => {
   dashboardSectionCustomer.innerHTML = (`
         <nav class="nav">
@@ -166,11 +164,10 @@ const confirmCancelCustomer = (bookingID) => {
   document.getElementById('cancelBtn').remove();
   document.getElementById('roomDisplayWrapper').innerHTML += (`
         <form class="form">
-            <label class="search-label" for="confirm-cancel">Are you sure you want too cancel?</label>
+            <label class="search-label" for="confirm-cancel">Are you sure you want too cancel? Our glorious Dark Lord would ask you to reconsider.</label>
             <input class="cancel-btn" id="confirmCancelBtn" type="submit" name="confirm-cancel" value="Confirm" data-selectedBookingID="${bookingID}">
         </form>
     `);
-
 }
 
 const cancelBookingAndShowResponse = (bookingID) => {
@@ -186,7 +183,6 @@ const cancelBookingAndShowResponse = (bookingID) => {
       dashboardSectionCustomer.innerHTML += (`<p id="bookingError">${error}</p>`);
       setError(document.getElementById('bookingError'));
     });
-
 }
 
 const bookRoomCustomer = () => {
@@ -266,7 +262,6 @@ const displayAvailableUnfilteredRooms = (roomsDateAndElement) => {
             <section class="available-room-section" id="availableRoomSection"></section>
         `)
   displayRoomsAndDetails({ rooms: roomsDateAndElement.rooms, date: roomsDateAndElement.date, element: 'availableRoomSection' })
-
 }
 
 const displayRoomsAndDetails = (roomsDateAndElementID) => {
@@ -329,8 +324,6 @@ const confirmBooking = (dateAndRoomNumber) => {
 
 }
 
-
-
 const loginAsCustomer = (loginNum) => {
   show([dashboardSectionCustomer]);
   hide([loginSection]);
@@ -346,11 +339,49 @@ const loginAsCustomer = (loginNum) => {
     });
 
 }
-window.addEventListener('load', loginAsCustomer(4))
+
 /* EVENT LISTENERS */
+window.addEventListener('load', () => {
+  show([loginSection]);
+  loginSection.innerHTML = (` 
+        <div class="login-wrapper" id="loginWrapper">
+            <h1 class="heading login-heading">Welcome to The Overlook</h1>
+            <p class='sub-heading'>mannaged by oneRing LLC</p>
+            <p class="login-description" id="loginDescription">Please sign in.</p>
+            <form class="login-form">
+                <div class="login-name-wrapper">
+                    <label class='login-label' for="login-name">Login Name: </label>
+                    <input class="login-name-input" id="loginName" type="text" name="login-name" placeholder="Login Name">
+                </div>
+                <div class="password-wrapper">
+                    <label class='login-label' for="password">Password: </label>
+                    <input class="password-input" id="password" type="password" name="password" placeholder="Password">
+                </div>
+                <input class="login-submit-btn" id="loginSubmitBtn" type="submit" value="Login"> 
+            <form>
+        </div>
+    `);
 
+});
 
+loginSection.addEventListener('click', (event) => {
+  if (event.target.id === 'loginSubmitBtn') {
+    event.preventDefault();
+    const loginName = document.querySelector('#loginName').value;
+    const password = document.querySelector('#password').value;
+    const loginDescription = document.querySelector('#loginDescription');
+    if (!loginName.length || !password.length) {
+      loginDescription.innerHTML = 'Please enter your login name and password.';
+      setError(loginDescription);
+    } else if (password === 'overlook2021' && loginName.includes('customer') && loginName.replace('customer', '') <= 50 && loginName.replace('customer', '').length > 0) {
+      loginAsCustomer(loginName.replace('customer', ''));
+    } else {
+      loginDescription.innerHTML = 'Invalid login credentials.';
+      setError(loginDescription);
+    }
+  }
 
+});
 
 dashboardSectionCustomer.addEventListener('click', (event) => {
   if (event.target.getAttribute('data-bookingID')) {
@@ -370,9 +401,7 @@ dashboardSectionCustomer.addEventListener('click', (event) => {
   } else if (event.target.id === 'bookRoomBtn') {
     bookRoomCustomer();
   }
-
 });
-
 
 bookRoomSectionCustomer.addEventListener('click', (event) => {
   if (event.target.id === 'roomPickerBtn') {
@@ -396,6 +425,5 @@ bookRoomSectionCustomer.addEventListener('click', (event) => {
   } else if (event.target.id === 'returnToPickerBtn') {
     bookRoomCustomer();
   }
-
 });
 
