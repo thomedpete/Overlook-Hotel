@@ -6,74 +6,16 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="./images/eye-logo.png">
-  <title>Overlook Hotel</title>
+  <title>Overlook</title>
 </head>
 
 <body>
-  <section class="log-in-page hidden" id="logInPage">
-    <p class="login-welcome">Please Login To See Your Dashboard!</p>
-    <form action="" method="get" class="form-example">
-      <div class="login-form username">
-        <label for="name">Enter your username: </label>
-        <input type="text" name="name" id="name" required>
-      </div>
-      <div class="login-form password">
-        <label for="email">Enter your password: </label>
-        <input type="email" name="email" id="email" required>
-      </div>
-      <div class="login-submit-button">
-        <input type="submit" value="Log In!">
-      </div>
-    </form>
-    <img src="./images/theOverlook.png" class="login-logo" alt="a view of the Overlook Hotel in Mordor">
-  </section>
-
-
-  <nav class="navigation-bar " id="navBar">
-    <h1>Overlook Hotel</h1>
-    <p class="user-welcome" id="userWelcome">Welcome User</p>
-    <img src="./images/eye-logo.png" class="nav-logo" alt="eye of sauron ">
-  </nav>
-
-  <section class="dashboard " id="dashBoard">
-
-    <h2 id="dashboardLabel">Guest Dashboard</h2>
-    <h3 class="'rewards-points" id="rewardsPoints"></h3>
-
-    <section class="calander-for-booking-container" id="calanderForBookingContainer">
-      <h3>Book while you can!</h3>
-      <label class="calender-label" for="start">So many dates to choose from!:</label>
-      <input class="calender" type="date" id="actualCalender" name="trip-start" min="2022-10-27"
-        max="2030-12-31" tabindex="0">
-      <button class="calender-submit-button" id="calenderSubmitButton">Select Date!</button>
-    </section>
-    <section class="past-future-bookings">
-      <section class="future-bookings" id="futureBookings">
-        <p class="future-label">Future Room Bookings</p>
-        <article class="most-recent-booking" id="mostRecentBookings"></article>
-        <button class="show-all-future" id="showAllFuture">Show All</button>
-      </section>
-   
-      <section class="past-bookings" id="pastBookings">
-        <p class="past-label">Most Recent Past Room Bookings</p>
-        <article class="most-recent-past-booking" scrolling="auto" id="mostRecentPastBookings"></article>
-        <button class="show-all-past" id="showAllPast">Show All</button>
-
-      </section>
-    </section>
-    <img src="./images/helpfulFrontDesk.png" class="friendly-staff hidden" alt="front desk orcs helping guests">
-
-  </section>
-<section class="all-future-bookings hidden" id="allFutureBookingsPage">
-</section>
-  <section class="all-past-bookings hidden" id="previousBookingsPage">
-    <button class="return-to-dash-board" id="returnToDash">Return To Dashboard</button> <br>
-  </section>
-<section class="avalible-rooms hidden" id="avalibleRooms">
-  <button class="return-to-dash-board" id="returnToDash">Return To Dashboard</button>
-</section>
-  <script src="bundle.js"></script>
-
+  <section id="loginSection" class="login-section hidden" aria-live="polite"></section>
+  <section id="dashboardSectionCustomer" class="dashboard-section-customer hidden" aria-live="polite"></section>
+  <section id="dashboardSectionManager" class="dashboard-section-manager hidden" aria-live="polite"></section>
+  <section id="bookRoomSectionCustomer" class="book-room-section-customer hidden" aria-live="polite"></section>
+  <section id="bookRoomSectionManager" class="book-room-section-manager hidden" aria-live="polite"></section>
+  <script src="./bundle.js"></script>
 </body>
 
 </html>
