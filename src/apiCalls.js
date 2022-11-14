@@ -28,4 +28,4 @@ const postBooking = (booking) => fetch(`${apiBase}bookings`, {
     return response.json()
   })
 
-export { fetchData, getPromiseData, postBooking } 
+export { fetchData, postBooking } 

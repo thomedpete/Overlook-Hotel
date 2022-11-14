@@ -36,34 +36,42 @@
   </nav>
 
   <section class="dashboard " id="dashBoard">
-    
+
     <h2 id="dashboardLabel">Guest Dashboard</h2>
-   
-    <section class="calander-for-booking-container" id="calanderForBookingContainer"> 
+    <h3 class="'rewards-points" id="rewardsPoints"></h3>
+
+    <section class="calander-for-booking-container" id="calanderForBookingContainer">
       <h3>Book while you can!</h3>
-      <label class="calender-label" for="start">Select a date!:</label>
-      <input class="calender" type="date" id="start" name="trip-start" value="2022-10-27" min="2022-10-27" max="2030-12-31" tabindex="0">
+      <label class="calender-label" for="start">So many dates to choose from!:</label>
+      <input class="calender" type="date" id="actualCalender" name="trip-start" min="2022-10-27"
+        max="2030-12-31" tabindex="0">
+      <button class="calender-submit-button" id="calenderSubmitButton">Select Date!</button>
     </section>
-   <section class="past-future-bookings">
+    <section class="past-future-bookings">
       <section class="future-bookings" id="futureBookings">
         <p class="future-label">Future Room Bookings</p>
-        <button class="show-all-future" id="showAllFuture"></button>
+        <article class="most-recent-booking" id="mostRecentBookings"></article>
+        <button class="show-all-future" id="showAllFuture">Show All</button>
       </section>
-
+   
       <section class="past-bookings" id="pastBookings">
-        <p class="past-label">Previous Room Bookings</p>
-        <button class="show-all-past" id="showAllPast"></button>
-        
+        <p class="past-label">Most Recent Past Room Bookings</p>
+        <article class="most-recent-past-booking" scrolling="auto" id="mostRecentPastBookings"></article>
+        <button class="show-all-past" id="showAllPast">Show All</button>
+
       </section>
     </section>
-    <img src="./images/helpfulFrontDesk.png" class="friendly-staff" alt="front desk orcs helping guests">
+    <img src="./images/helpfulFrontDesk.png" class="friendly-staff hidden" alt="front desk orcs helping guests">
 
   </section>
-
-    <section class="all-past-bookings hidden" id="previousBookingsPage">
-    <button class="return-to-dash-board">Return To Dashboard</button> <br>
-    </section>
-
+<section class="all-future-bookings hidden" id="allFutureBookingsPage">
+</section>
+  <section class="all-past-bookings hidden" id="previousBookingsPage">
+    <button class="return-to-dash-board" id="returnToDash">Return To Dashboard</button> <br>
+  </section>
+<section class="avalible-rooms hidden" id="avalibleRooms">
+  <button class="return-to-dash-board" id="returnToDash">Return To Dashboard</button>
+</section>
   <script src="bundle.js"></script>
 
 </body>
