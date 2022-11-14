@@ -2,54 +2,47 @@ import Room from './Room';
 import Booking from './Booking';
 
 class Hotel {
-  //will take in an object with keys of allRooms, and allBookings
-  constructor(allHotelData) {
-    this.allRooms = this.returnRoomsObjectArray(allHotelData.allRooms);
-    this.allBookings = this.returnBookingsObjectArray(allHotelData.allBookings);
-  }
-  
-  returnRoomsObjectArray(rooms) {
-    return rooms.map(room => new Room(room));
-  }
-
-  returnBookingsObjectArray(bookings) {
-    return bookings.map(booking => new Booking(booking));
-  }
-
-  returnAvailableAndBookedRooms(date) {
-    const unavailableRoomNums = this.allBookings.filter(booking => { 
-    return  booking.date === date
-    })
-      .map(booking => booking.roomNumber);
-    return {
-      availableRooms: this.allRooms.filter(room => {
-       return !unavailableRoomNums.includes(room.number)
-      }),
-      unavailableRooms: this.allRooms.filter(room => {
-       return unavailableRoomNums.includes(room.number)})
-    };
-  }
-
-  ReturnBookingObj(bookingData) {
-    return {
-      "userID": bookingData.id,
-      "date": bookingData.date,
-      "roomNumber": parseInt(bookingData.roomNumber)
+    constructor(allHotelData) {
+        this.allRooms = this.makeRooms(allHotelData.allRooms);
+        this.allBookings = this.makeBookings(allHotelData.allBookings);
     }
-  }
 
-};
+    makeRooms(rooms) {
+        return rooms.map(room => new Room(room));
+    }
 
+    makeBookings(bookings) {
+        return bookings.map(booking => new Booking(booking));
+    }
 
+    getAvailableAndUnavailableRooms(date) {
+        const unavailableRoomNums = this.allBookings.filter(booking => booking.date === date)
+            .map(booking => booking.roomNumber);
+       
+        return {availableRooms: this.allRooms.filter(room => !unavailableRoomNums.includes(room.number)),
+            unavailableRooms: this.allRooms.filter(room => unavailableRoomNums.includes(room.number))};
+    }
 
+    makeBookingObj(bookingData) {
+        return {
+            "userID": bookingData.id,
+            "date": bookingData.date,
+            "roomNumber": parseInt(bookingData.roomNumber)
+        }
+    }
 
+    filterRoomsByType(roomsAndRoomType) {
+        return roomsAndRoomType.rooms.filter(room => room.roomType === roomsAndRoomType.roomType);
+    }
 
+    findRoom(roomNum) {
+        return this.allRooms.find(room => room.number === roomNum);
+    }
 
-
-
-
-
-
-
+    findBooking(bookingID) {
+        return this.allBookings.find(booking => booking.id === bookingID);
+    }
+    
+}
 
 export default Hotel;

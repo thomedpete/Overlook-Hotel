@@ -1,18 +1,12 @@
-const apiUrl = 'http://localhost:3001/api/v1/';
+const apiBase = 'http://localhost:3001/api/v1/';
 
-const fetchData = (endPoint) => {
-  return fetch(`${apiUrl}${endPoint}`)
-    .then(response => response.json())
-    .catch(error => console.log(error));
-};
-
-const getPromiseData = () => {
-  Promise.all([fetchData('customers'), fetchData('bookings'), fetchData('rooms')]).then(data => {
-    customerData = data[0].customers;
-    bookingData = data[1].bookings;
-    roomData = data[2].rooms;
-  })
-};
+const getFetch = (endpoint) => fetch(`${apiBase}${endpoint}`).then(response => response.json());
+const cancelBooking = (id) => fetch(`${apiBase}bookings/${id}`, {
+  method: 'DELETE',
+  headers: {
+    "Content-Type": "application/json"
+  }
+});
 
 const postBooking = (booking) => fetch(`${apiBase}bookings`, {
   method: 'POST',
@@ -23,9 +17,9 @@ const postBooking = (booking) => fetch(`${apiBase}bookings`, {
 })
   .then(response => {
     if (!response.ok) {
-      throw 'Sorry, something went wrong. Looks like we Couldnt book your room.'
+      throw 'Sorry, something went wrong. Looks like we where unable to make your booking.'
     }
     return response.json()
   })
 
-export { fetchData, postBooking } 
+export { getFetch, cancelBooking, postBooking };
