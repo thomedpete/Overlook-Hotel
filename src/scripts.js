@@ -105,8 +105,6 @@ const buildBookings = (bookingsAndElementID) => {
 
 }
 
-
-
 const displayCustomerDash = () => {
   dashboardSectionCustomer.innerHTML = (`
         <nav class="nav">
@@ -264,7 +262,6 @@ const displayAvailableUnfilteredRooms = (roomsDateAndElement) => {
             <section class="available-room-section" id="availableRoomSection"></section>
         `)
   displayRoomsAndDetails({ rooms: roomsDateAndElement.rooms, date: roomsDateAndElement.date, element: 'availableRoomSection' })
-
 }
 
 const displayRoomsAndDetails = (roomsDateAndElementID) => {
@@ -327,8 +324,6 @@ const confirmBooking = (dateAndRoomNumber) => {
 
 }
 
-
-
 const loginAsCustomer = (loginNum) => {
   show([dashboardSectionCustomer]);
   hide([loginSection]);
@@ -390,7 +385,6 @@ loginSection.addEventListener('click', (event) => {
 
 });
 
-
 dashboardSectionCustomer.addEventListener('click', (event) => {
   if (event.target.getAttribute('data-bookingID')) {
     const selectedRoom = hotel.findRoom(parseInt(event.target.getAttribute('data-roomNum')));
@@ -409,9 +403,7 @@ dashboardSectionCustomer.addEventListener('click', (event) => {
   } else if (event.target.id === 'bookRoomBtn') {
     bookRoomCustomer();
   }
-
 });
-
 
 bookRoomSectionCustomer.addEventListener('click', (event) => {
   if (event.target.id === 'roomPickerBtn') {
@@ -435,6 +427,5 @@ bookRoomSectionCustomer.addEventListener('click', (event) => {
   } else if (event.target.id === 'returnToPickerBtn') {
     bookRoomCustomer();
   }
-
 });
 
