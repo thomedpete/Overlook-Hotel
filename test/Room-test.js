@@ -1,59 +1,46 @@
 import chai from 'chai';
-import Room from '../src/classes/Room';
-import { roomsArray } from '../src/test-data/test-data';
 const expect = chai.expect;
+import { rooms } from './test-data/room-data';
+import Room from '../src/classes/Room';
 
 describe('Room', () => {
-  let newRoom1,newRoom2,singleRoom1,singleRoom2;
+    it('Should be a function', () => {
+        expect(Room).to.be.a('function');
+    });
 
-  beforeEach(() => {
-    singleRoom1 = roomsArray[0]
-    singleRoom2 = roomsArray[1]
-    newRoom1 = new Room(singleRoom1)
-    newRoom2 = new Room(singleRoom2)
-  });
+    it('Should be an instance of Room', () => {
+        const room = new Room(rooms[0]);
+        expect(room).to.be.an.instanceof(Room);
+    });
 
-  it('should be a function',() => {
-    expect(Room).to.be.a('function');
-  });
+    it('Should have a bed size', () => {
+        const room = new Room(rooms[2]);
+        expect(room.bedSize).to.equal('queen');
+    });
 
-  it('should be an instance of Room',() => {
-    expect(newRoom1).to.be.an.instanceOf(Room);
-    expect(newRoom2).to.be.an.instanceOf(Room);
-  });
+    it('Should have a room number', () => {
+        const room = new Room(rooms[0]);
+        expect(room.number).to.equal(15);
+    });
 
-  it('should have a number property', () => {
-    expect(newRoom1.number).to.equal(1)
-    expect(newRoom2.number).to.equal(2)
-  });
+    it('Should have a room type', () => {
+        const room = new Room(rooms[2]);
+        expect(room.roomType).to.equal('single room');
+    });
 
-  it('should have a type property', () => {
-    expect(newRoom1.roomType).to.equal('residential suite')
-    expect(newRoom2.roomType).to.equal('suite')
-  });
+    it('Should know if it has bidet', () => {
+        const room = new Room(rooms[1]);
+        expect(room.bidet).to.equal(false);
+    });
 
-  it('should have or not have a bidet', () => {
-    expect(newRoom1.bidet).to.equal(true)
-    expect(newRoom2.bidet).to.equal(false)
-  });
+    it('Should have number of beds', () => {
+        const room = new Room(rooms[4]);
+        expect(room.numBeds).to.equal(1);
+    });
 
-  it('should have a bed size property', () => {
-    expect(newRoom1.bedSize).to.equal('queen')
-    expect(newRoom2.bedSize).to.equal('full')
-  });
+    it('Should have cost per night', () => {
+        const room = new Room(rooms[3]);
+        expect(room.costPerNight).to.equal(207.24);
+    });
 
-  it('should have a number of beds property', () => {
-    expect(newRoom1.numBeds).to.equal(1)
-    expect(newRoom2.numBeds).to.equal(2)
-  });
-
-  it('should have a cost per night property', () => {
-    expect(newRoom1.costPerNight).to.equal(358.4)
-    expect(newRoom2.costPerNight).to.equal(477.38)
-  });
-
-
-
-
-  
 });

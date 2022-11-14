@@ -1,56 +1,65 @@
 import chai from 'chai';
 const expect = chai.expect;
+import { rooms } from './test-data/room-data';
+import { bookings } from './test-data/booking-data';
 import Hotel from '../src/classes/Hotel';
-import { user1, user2, roomsArray, bookingsArray } from '../src/test-data/test-data';
+import { customers } from './test-data/customer-data';
 
 describe('Hotel', () => {
-  let newHotel, hotelInfo; 
+    let hotel;
 
-  beforeEach(() => {
-    hotelInfo = { allRooms: roomsArray, allBookings: bookingsArray }
-    newHotel = new Hotel(hotelInfo)
-  });
+    beforeEach(() => {
+        hotel = new Hotel({allRooms: rooms, allBookings: bookings});
+    });
 
-  it('should be a function', () => {
-    expect(Hotel).to.be.a('function');
-  });
+    it('Should be a function', () => {
+        expect(Hotel).to.be.a('function');
+    });
 
-  it('should be an instance of Customer', () => {
-    expect(newHotel).to.be.an.instanceOf(Hotel);
-  });
+    it('Should be an instance of Hotel', () => {
+        expect(hotel).to.be.a.instanceOf(Hotel);
+    }); 
 
-  it('Should have an array of all the rooms', () => {
-    expect(newHotel.allRooms).to.deep.equal(roomsArray);
-  });
+    it('Should have all the rooms', () => {
+        expect(hotel.allRooms).to.deep.equal(rooms);
+    });
 
-  it('Should have an array of all the bookings', () => {
-    expect(newHotel.allBookings).to.deep.equal(bookingsArray);
-  });
+    it('Should have all the bookings', () => {
+        expect(hotel.allBookings).to.deep.equal(bookings);
+    });
 
-  it('Should update all unavailable rooms from the Hotel unavailableRooms prop ', () => {
-    const unavailableRooms = newHotel.returnAvailableAndBookedRooms('2022/04/22').unavailableRooms;
-    expect(unavailableRooms).to.deep.equal([
-    {
-    "bedSize": "full",
-    "bidet": false,
-    "costPerNight": 294.56,
-    "numBeds": 1,
-    "number": 15,
-   "roomType": "residential suite",
-    }
-    ]);
-  });
+    it('Should return all available rooms', () => {
+        const availableRooms = hotel.getAvailableAndUnavailableRooms('2023/10/23').availableRooms;
+        expect(availableRooms).to.deep.equal([rooms[0], rooms[1], rooms[2], rooms[3], rooms[4], rooms[5]]);
+    });
 
+    it('Should return all booked rooms', () => {
+        const bookedRooms = hotel.getAvailableAndUnavailableRooms('2023/02/23').unavailableRooms;
+        expect(bookedRooms).to.deep.equal([rooms[4]]);
+    });
 
-  it('should ', () => {
-    expect().to.deep.equal();
-  });
+    it('Should make a Booking', () => {
+        const newBooking = hotel.makeBookingObj({roomNumber: rooms[1].number, id: customers[1].id, date: '2023/02/23'});
+        expect(newBooking).to.deep.equal({
+            userID: 12,
+            date: '2023/02/23',
+            roomNumber: 23
+        });
+    });
 
-  it('should ', () => {
-    expect().to.equal()
-  });
+    it('Should filter available rooms by their room type', () => {
+        const filteredRooms = hotel.filterRoomsByType({rooms: [rooms[0], rooms[1], rooms[2], rooms[3], rooms[4], rooms[5]], roomType: 'single room'});
+        expect(filteredRooms).to.deep.equal([rooms[2], rooms[3], rooms[4]]);
+    });
 
+    it('Should find a room by its number', () => {
+        const room = hotel.findRoom(23);
+        expect(room).to.deep.equal(rooms[1]);
+    });
 
-
+    it('Should find a booking', () => {
+        const foundBooking = hotel.findBooking('5fwrgu4i7k55hl6wn');
+        expect(foundBooking).to.deep.equal(bookings[3]);
+    });
 
 });

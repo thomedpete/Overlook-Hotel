@@ -1,188 +1,420 @@
-//~~~Imports~~~
-import './css/styles.css';
-import './images/turing-logo.png'
+/* IMPORTS */
 import './images/overlookLogo.png'
 import './images/theOverlook.png'
 import './images/helpfulFrontDesk.png'
 import './images/eye-logo.png'
+import './css/style.css';
 import Customer from './classes/Customer';
-import Booking from './classes/Booking';
-import Room from './classes/Room';
+import Manager from './classes/Manager';
 import Hotel from './classes/Hotel';
+import { getFetch, cancelBooking, postBooking } from './api-calls';
 
-import { fetchData, postBooking } from './apiCalls'
+//~~ QUERY SELECTORS ~~
 
-//~~~QuerySelectors~~~
-const userWelcome = document.getElementById('userWelcome');
-const userDashBoardLabel = document.getElementById('dashboardLabel');
-const userRewardsPoints = document.getElementById('rewardsPoints');
-const calenderForBookingCont = document.getElementById('calanderForBookingContainer');
-const actualCalender = document.getElementById('actualCalender');
-const calenderSubmitButton = document.getElementById('calenderSubmitButton')
-const pastFutureBookings = document.getElementById('pastFutureBookings');
-const futureBookings = document.getElementById('futureBookings');
-const previousBookings = document.getElementById('pastBookings');
-const previousBookingsPage = document.getElementById('previousBookingsPage');
-const navBar = document.getElementById('navBar');
-const dashBoard = document.getElementById('dashBoard');
-const dashboardReturn = document.getElementById('backToDashboard');
-const showAllPastButton = document.getElementById('showAllPast');
-const showAllFutureButton = document.getElementById('showAllFuture');
-const allFutureBookingsPage = document.getElementById('allFutureBookingsPage'); 
-const mostRecentBookings = document.getElementById('mostRecentBookings');
-const mostRecentPastBookings = document.getElementById('mostRecentPastBookings');
-const returnToDash = document.getElementById('returnToDash');
-const avalibleRoomsByDate = document.getElementById('avalibleRooms');
-let customerData;
-let bookingData;
-let roomData;
+const loginSection = document.querySelector('#loginSection');
+const dashboardSectionCustomer = document.querySelector('#dashboardSectionCustomer');
+const dashboardSectionManager = document.querySelector('#dashboardSectionManager');
+const bookRoomSectionCustomer = document.querySelector('#bookRoomSectionCustomer');
+const bookRoomSectionManager = document.querySelector('#bookRoomSectionManager');
+
+//~~ VARIABLES ~~
+
 let customer;
-let pastBookings;
-let totalMoneySpent;
-let upcomingBookings;
+let manager;
 let hotel;
 
+const cancelMessage = '<h1>Your booking has been canceled.</h1><p>We are sorry you can\'t make it our mighty father will be displeased.</p>';
+const bookedMessage = '<h1></></i> Your room has been booked!</h1><p>Lord Sauron awaits your arival.</p>';
 
-const getPromiseData = () => {
-  Promise.all([fetchData('customers'), fetchData('bookings'), fetchData('rooms')]).then(data => {
-    customer = data[0].customers[0];
-    bookingData = data[1].bookings;
-    roomData = data[2].rooms;
-    customer = new Customer({ customer: customer, allBookings: bookingData });
-    hotel = new Hotel({ allRooms: roomData, allBookings: bookingData });
-    displayUserName();
-    displayRecentBookings();
-    displayRecentBookingsPast();
-  })
-};
+//~~ HELPER FUNCTIONS ~~
 
-
-const displayRecentBookings = () => {
-  customer.futureBookings.forEach((booking) => {
-   let roomToType = convertRoomNumberToType(booking.roomNumber)
-    mostRecentBookings.innerHTML += `
-    <article class='booking-card' id='bookingCard'>
-    <p class='dashboard-recent-bookings'> <span class='format'>Date</span>: ${booking.date}</p>
-    <p class='dashboard-recent-bookings'> <span class='format'>Room Number</span>: ${booking.roomNumber}</p>
-    <p class='dashboard-recent-bookings'> <span class='format'>Room Type</span>: ${roomToType.roomType}</p>
-    </article>`
-  })  
-};
-
-const displayRecentBookingsPast = () => {
-  console.log(customer.pastBookings)
-  customer.pastBookings.reverse().forEach((booking) => {
-    let roomToType = convertRoomNumberToType(booking.roomNumber)
-    mostRecentPastBookings.innerHTML = `
-    <article class='booking-card' id='bookingCard'> 
-    <p class='dashboard-recent-bookings'> <span class='format'>Date</span>: ${booking.date}</p>
-    <p class='dashboard-recent-bookings'> <span class='format'>Room Number</span>: ${booking.roomNumber}</p>
-    <p class='dashboard-recent-bookings'> <span class='format'>Room Type</span>: ${roomToType.roomType}</p>
-    </article>`
-  })
-};
-
-const createPastBookingsPage = () => {
-  hide([dashBoard, navBar]);
-  show([previousBookingsPage])
-  customer.pastBookings.forEach(booking => {
-    let roomToType = convertRoomNumberToType(booking.roomNumber)
-    previousBookingsPage.innerHTML += `
-        <article class="customer-booking-article past-bookings" id="${booking.id}">
-            <p class="booking-info">ID: ${booking.id}</p>
-            <p class="booking-info">Date: ${makeDateDisplay(booking.date)}</p>
-            <p class="booking-info">Room Number: ${booking.roomNumber}</p>
-            <p class="booking-info">Room Type: ${roomToType.roomType}</p>
-            <p class="booking-info">This Room Has ${roomToType.numBeds} ${roomToType.bedSize} beds.</p>
-            <button class="cancel-btn" id="${booking.id}" data-bookingID="${booking.id}">Cancel Booking</button>
-        </article>
-            `;
-})}
-
-const dashReturnRefresh = () => {
-  hide([previousBookingsPage]);
-  show([dashBoard, navBar]);
-  console.log('did it work?')
-};
-
-const convertRoomNumberToType = (roomNumber) => {
-let roomDeets = hotel.allRooms.find((room) => {
-   return room.number === roomNumber
-  })
-  return roomDeets
-}
-
-const createFutureBookingsPage = () => {
-  hide([dashBoard, navBar]);
-  show([allFutureBookingsPage])
-  customer.futureBookings.forEach(booking => {
-   let roomToType = convertRoomNumberToType(booking.roomNumber)
-      allFutureBookingsPage.innerHTML += (`
-        <article class="customer-booking-article future-bookings" id="${booking.id}">
-            <p class="booking-info">ID: ${booking.id}</p>
-            <p class="booking-info">Date: ${makeDateDisplay(booking.date)}</p>
-            <p class="booking-info">Room Number: ${booking.roomNumber}</p>
-            <p class="booking-info">Room Type: ${roomToType.roomType}</p>
-            <p class="booking-info">This Room Has ${roomToType.numBeds} ${roomToType.bedSize} beds.</p>
-            <button class="cancel-btn" id="${booking.id}" data-bookingID="${booking.id}">Cancel Booking</button>
-        </article>
-            `);
-  });
-}
-
-
-//~~Event Listeners~~
-window.addEventListener('load', getPromiseData);
-showAllFutureButton.addEventListener('click',createFutureBookingsPage);
-showAllPastButton.addEventListener('click', createPastBookingsPage);
-returnToDash.addEventListener('click', dashReturnRefresh);
-calenderSubmitButton.addEventListener('click', (event) => {
-  let selectedDate = actualCalender.value
-  makeDateDisplay(selectedDate);
-  displayAvailableRoomsManager(makeDateDisplay(selectedDate))
-console.log(makeDateDisplay(selectedDate))
-});
-
-
-//~~Helper Functions~~
-const hide = (elements) => elements.forEach(element => element.classList.add('hidden'));
-const show = (elements) => elements.forEach(element => element.classList.remove('hidden'));
-const bookedMessage = `<h1>The Overlook at Mordor awaits your arival, the room is booked!</h1>`
-const canceledMessage = `<h1>The Overlook at Mordor hopes to see you soon, the room is cancled!</h1>`
-
-const returnCurrentDate = () => {
+const makeUpperCase = (string) => string.split(' ').map(word => word[0].toUpperCase() + word.substring(1).toLowerCase()).join(' ');
+const getTodaysDate = () => {
   let year = new Date().getFullYear().toString();
   let month = (new Date().getMonth() + 1).toString();
   let date = new Date().getDate().toString();
   month = month.length === 1 ? 0 + month : month;
   date = date.length === 1 ? 0 + date : date;
+
   return `${year}/${month}/${date}`;
-};
+}
+
+const hide = (elements) => elements.forEach(element => element.classList.add('hidden'));
+const show = (elements) => elements.forEach(element => element.classList.remove('hidden'));
+const setError = (element) => {
+  element.setAttribute('style', 'color: red');
+  element.setAttribute('role', 'alert');
+  element.setAttribute('tabindex', -1);
+  element.focus();
+
+}
 
 const makeDateDisplay = (date) => {
-  const dateNumbers = date.split("/");
-  const year = dateNumbers.shift();
-  dateNumbers.push(year);
-  return dateNumbers.join('/');
+  const dateNums = date.split("/");
+  const year = dateNums.shift();
+  dateNums.push(year);
+  return dateNums.join('/');
 };
 
-// function mapBookings(bookingsArray) {
-//   let mappedBookings = ''
-//   mappedBookings = bookingsArray.map((booking) => {
-//     return `<p class='past-booking-info'> Date: ${booking.date}  <br />
-//     Room Number: ${booking.roomNumber} <br /> </p>`
-//   }).join('')
-//   return mappedBookings
-// }
 
-function displayUserName() {
-  userWelcome.innerText = `Welcome, ${customer.name} you have spent $${customer.returnTotalSpent(hotel.allRooms)} this pleases our Dark Lord! `
-  let firstName = customer.name.split(' ')[0]
-  userDashBoardLabel.innerText = `${firstName}'s Dashboard `
-};
+//~~ FUNCTIONS ~~
 
-const displayAvailableUnfilteredRooms = () => {
- avalibleRoomsByDate.innerHTML += (`
+const refresPromise = (statusMessage) => {
+  Promise.all([getFetch(`customers/${customer.id}`), getFetch('bookings')])
+    .then(data => {
+      customer = new Customer({ customer: data[0], allBookings: data[1].bookings });
+      hotel = new Hotel({ allRooms: hotel.allRooms, allBookings: data[1].bookings });
+      show([dashboardSectionCustomer]);
+      hide([bookRoomSectionCustomer]);
+      dashboardSectionCustomer.innerHTML = (`
+            <nav class="nav">
+                <button class="nav-btn" id="dashBtn"> Dashboard</button>
+                <button class="nav-btn" id="bookRoomBtn"> Book a Room</button>
+            </nav>
+            <div class="status-msg-wrapper" id="statusMsgWrapper"></div>
+            `)
+      document.getElementById('statusMsgWrapper').innerHTML = statusMessage;
+    })
+    .catch(err => {
+      dashboardSectionCustomer.innerHTML = (`
+            <nav class="nav">
+                <button class="nav-btn" id="dashBtn"> Dashboard</book>
+                <button class="nav-btn" id="bookRoomBtn"> Book a Room</button>
+            </nav>
+            <h1 class="heading">Apolgies, it looks like something went wrong reloading the page. Error: ${err}</h1>
+            `)
+    });
+
+}
+
+const refreshManagerHotelAndCustomers = (cancelOrConfirmed) => {
+  Promise.all([getFetch('customers'), getFetch('rooms'), getFetch('bookings')])
+    .then(data => {
+      manager = new Manager({ customers: data[0].customers, allBookings: data[2].bookings });
+      hotel = new Hotel({ allRooms: data[1].rooms, allBookings: data[2].bookings });
+      displayManagerDash();
+      document.getElementById('managerDashHeading').innerText = `${customer.name}'s booking is ${cancelOrConfirmed}.`
+      customer = null;
+    })
+    .catch(error => {
+      setError(document.getElementById('loginDescription'));
+      document.getElementById('loginDescription').innerHTML = ` Looks like something went wrong. Error: ${error}`
+    });
+
+}
+
+const buildBookings = (bookingsAndElementID) => {
+  if (!bookingsAndElementID.bookings.length) {
+    document.querySelector(`#${bookingsAndElementID.elementID}`).innerHTML += (`
+            <p class="informational-p">You don't have any bookings to show.</p>
+        `);
+  } else {
+    bookingsAndElementID.bookings.forEach(booking => {
+      const room = hotel.findRoom(booking.roomNumber);
+      document.querySelector(`#${bookingsAndElementID.elementID}`).innerHTML += (`
+                <button class="booking-detail-btn" type="button" data-bookingID="${booking.id}" data-roomNum="${booking.roomNumber}" data-date="${booking.date}">
+                    <p class="information" data-bookingID="${booking.id}" data-roomNum="${booking.roomNumber}" data-date="${booking.date}">${makeDateDisplay(booking.date)}</p>
+                    <p class="information" data-bookingID="${booking.id}" data-roomNum="${booking.roomNumber}" data-date="${booking.date}">Room Number: ${booking.roomNumber}</p>
+                    <p class="information" data-bookingID="${booking.id}" data-roomNum="${booking.roomNumber}" data-date="${booking.date}">Cost Per Night: $${room.costPerNight}</p>
+                    <p class="screen-reader-only">Click for room info</p>
+                </button>
+            `);
+    });
+  }
+
+}
+
+const displayCustomerSearch = () => {
+  show([dashboardSectionManager]);
+  hide([bookRoomSectionManager]);
+  dashboardSectionManager.innerHTML = (`
+        <nav class="nav">
+            <button class="nav-btn" id="managerDashBtn"> Dashboard</button>
+        </nav>
+        <h1 class="customer-search-heading">Let's get to work!</h1>
+        <section class="search-customer-wrapper">
+            <label class="search-label" for="customer-search">Search for customer by name: </label>
+            <input class="search-input" id="customerSearchInput" type="test" name="customer-search">
+            <input class="search-btn" id="customerSearchBtn" type="button" value="Find Customer">
+            <p class="information hidden" id="invalidName">This isn't a valid name.</p>
+        </section>
+    `);
+
+}
+
+const displayCustomer = (customerData) => {
+  dashboardSectionManager.innerHTML = (`
+        <nav class="nav">
+            <button class="nav-btn" id="managerDashBtn"> Dashboard</button>
+            <button class="nav-btn" id="managerFindCustomerBtn"> Find a Customer</button>
+        </nav>
+    `);
+
+  if (customerData.name) {
+    customer = customerData;
+    displayCustomerInfoManager();
+    buildFutureCustomerBookingsManager();
+    buildPastCustomerBookingsManager();
+  } else {
+    dashboardSectionManager.innerHTML += (`
+            <h1 class="no-customer-found">${customerData}<h1>
+        `);
+  }
+}
+
+const displayCustomerInfoManager = () => {
+  dashboardSectionManager.innerHTML += (`
+            <h1 class="customer-info-heading">Here is ${customer.name}'s information.</h1>
+            <section class="customer-date-wrapper">
+                <p class="customer-info">ID: ${customer.id}</p>
+                <p class="customer-info">Total Spent: ${customer.returnTotalSpent(hotel.allRooms)}</p>
+                <button class="make-booking-btn" id="makeBookingBtnManager">Make Booking</button>
+            </section>
+            <h2 class="heading-manager-customer">Future Bookings</h2>
+            <section class="list-bookings-manager" id="futureBookingsManager"></section>
+            <h2 class="heading-manager-customer">Past Bookings</h2>
+            <section class="list-bookings-manager" id="pastBookingsManager"></section>
+        `);
+
+}
+
+const buildFutureCustomerBookingsManager = () => {
+  customer.futureBookings.forEach(booking => {
+    document.getElementById('futureBookingsManager').innerHTML += (`
+                <article class="customer-booking-article" id="a${booking.id}">
+                    <p class="booking-info">ID: ${booking.id}</p>
+                    <p class="booking-info">Date: ${makeDateDisplay(booking.date)}</p>
+                    <p class="booking-info">Room Number: ${booking.roomNumber}</p>
+                    <button class="cancel-btn" id="${booking.id}" data-bookingID="${booking.id}">Cancel</button>
+                </article>
+            `);
+  });
+
+}
+
+const buildPastCustomerBookingsManager = () => {
+  customer.futureBookings.forEach(booking => {
+    document.getElementById('pastBookingsManager').innerHTML += (`
+                <article class="customer-booking-article">
+                    <p class="information">ID: ${booking.id}</p>
+                    <p class="information">Date: ${makeDateDisplay(booking.date)}</p>
+                    <p class="information">Room Number: ${booking.roomNumber}</p>
+                </article>
+            `);
+  });
+
+}
+
+const confirmCancelManager = (bookingID) => {
+  document.getElementById(bookingID).setAttribute('data-confirmCancel', 'true');
+  document.getElementById(bookingID).innerText = 'Confirm';
+
+}
+
+const confirmBookingManager = (elementID) => {
+  document.getElementById(elementID).setAttribute('data-confirmBooking', 'true');
+  document.getElementById(elementID).innerText = 'Confirm Booking';
+
+}
+
+const makeBookingDashManager = () => {
+  hide([dashboardSectionManager]);
+  show([bookRoomSectionManager]);
+
+  bookRoomSectionManager.innerHTML = (`
+        <nav class="nav">
+            <button class="nav-btn" id="managerDashBtn"> Dashboard</button>
+            <button class="nav-btn" id="managerFindCustomerBtn"> Find a Customer</button>
+        </nav>
+        <section class="book-for-customer-section" id="bookForCustomerSection">
+            <h1 class="manager-book-room-heading">Let's make your customer's booking.</h1>
+            <form class="room-picker-manager-form" id="roomPickerManager">
+                <label class="search-label" for="stay-date">Pick your stay date: 
+                    <input type="date" id="datePickerManager" name="stay-date" value="${getTodaysDate().split('/').join('-')}" min="${getTodaysDate().split('/').join('-')}" max="2024-01-01">
+                </label>
+                <input class="search-btn" id="roomPickerBtnManager" type="submit" value="Find Rooms">
+            </form>
+        </section>
+        <section class="manager-display-available-rooms" id="availableRoomSectionManager"></section>
+    `)
+
+}
+
+const displayAvailableRoomsManager = (date) => {
+  const availableRooms = hotel.getAvailableAndUnavailableRooms(date).availableRooms
+  if (!availableRooms.length) {
+    document.getElementById('availableRoomSectionManager').innerHTML = ('<h1 class="heading-no-rooms">We\'re so sorry, but you will not enter the gates of mordor this night.</h1>');
+  } else {
+    document.getElementById('availableRoomSectionManager').innerHTML = "";
+    displayAvailableUnfilteredRooms({ rooms: availableRooms, date: date, element: document.getElementById('availableRoomSectionManager') });
+  }
+
+}
+
+const displayManagerDash = () => {
+  show([dashboardSectionManager]);
+  hide([loginSection, bookRoomSectionManager]);
+  dashboardSectionManager.innerHTML = (`
+        <nav class="nav">
+            <button class="nav-btn" id="managerFindCustomerBtn"> Find a Customer</button>
+        </nav>
+        <div class="manager-heading-wrapper">
+            <h1 class="heading" id="managerDashHeading">Welcome, the Dark Lord thanks you for your service!</h1>
+        </div>
+        <section class="daily-stats-section" id="dailyStatsSection">
+            <h2 class="heading-two-stats">Here are today's stats.</h2>
+            <p class="stats-info"> There are ${hotel.getAvailableAndUnavailableRooms(getTodaysDate()).availableRooms.length} available rooms.</p>
+            <p class="stats-info"> There are ${hotel.getAvailableAndUnavailableRooms(getTodaysDate()).unavailableRooms.length} unavailable rooms.</p>
+            <p class="stats-info"> There is ${manager.getPercentAvailableRooms({ allRooms: hotel.allRooms, allBookings: hotel.allBookings, date: getTodaysDate() })} of rooms booked for tonight.</p>
+        </section>
+    `);
+
+}
+
+const displayCustomerDash = () => {
+  dashboardSectionCustomer.innerHTML = (`
+        <nav class="nav">
+            <button class="nav-btn" id="bookRoomBtn"> Book a Room</button>
+            <h1 class=nav-heading>Over Look Hotel </h1>
+        </nav>
+        <div class="customer-heading-wrapper">
+            <h1 class="heading customer-dash-heading">Welcome back ${customer.name}!</h1>
+        </div>
+        <h2 class="heading-two booking-heading">Upcoming Bookings</h2>
+        <section class="bookings-section" id="upcomingBookingSection"></section>
+        <h2 class="heading-two booking-heading">Past Bookings</h2>
+        <section class="bookings-section" id="pastBookingSection"></section>
+        <section class="total-spent-section" id="totalSpentSection">
+            <h2 class="heading-two">Total Amount Spent on Past Bookings</h2>
+            <p class="amount-spent">$${customer.returnTotalSpent(hotel.allRooms)}</p>
+            <p class='ammount-spent'>You have earned ${customer.returnTotalSpent(hotel.allRooms)} Watchful Eye Rewards Points!</p>
+        </section>
+`);
+
+  buildBookings({ bookings: customer.futureBookings, elementID: 'upcomingBookingSection' });
+  buildBookings({ bookings: customer.pastBookings, elementID: 'pastBookingSection' });
+
+}
+
+const showSelectBooking = (bookingIDAndRoom) => {
+  const selectedBooking = hotel.findBooking(bookingIDAndRoom.selectedBooking);
+  const hasBidet = bookingIDAndRoom.selectedRoom.bidet ? 'This room has a bidet' : 'This room doesn\'t have a bidet';
+  dashboardSectionCustomer.innerHTML = (`
+        <nav class="nav">
+            <button class="nav-btn" id="dashBtn"> Dashboard</book>
+            <button class="nav-btn" id="bookRoomBtn"> Book a Room</button>
+        </nav>
+        <div class="room-display-wrapper" id="roomDisplayWrapper">
+            <h1 class="heading">A Beautiful ${makeUpperCase(bookingIDAndRoom.selectedRoom.roomType)}</h1>
+            <article class='room-pic'></article>
+            <p class="information">Cost Per Night: $${bookingIDAndRoom.selectedRoom.costPerNight}</p>
+            <ul class="list">
+                <li> ${makeUpperCase(bookingIDAndRoom.selectedRoom.bedSize)} bed</li>
+                <li> Has ${bookingIDAndRoom.selectedRoom.numBeds} bed(s)</li>
+                <li> ${hasBidet}</li>
+                <li> The room number is ${bookingIDAndRoom.selectedRoom.number}</li>
+            </ul>
+        </div>
+    `);
+
+  if (selectedBooking.date >= getTodaysDate()) {
+    document.getElementById('roomDisplayWrapper').innerHTML += (`
+            <p class="information">Your booking is for ${makeDateDisplay(selectedBooking.date)}</p>
+            <button class="cancel-btn" id="cancelBtn" data-selectedBookingID="${selectedBooking.id}"> Cancel Booking</button>
+    `);
+  }
+
+}
+
+const confirmCancelCustomer = (bookingID) => {
+  document.getElementById('cancelBtn').remove();
+  document.getElementById('roomDisplayWrapper').innerHTML += (`
+        <form class="form">
+            <label class="search-label" for="confirm-cancel">Are you sure you want too cancel?</label>
+            <input class="cancel-btn" id="confirmCancelBtn" type="submit" name="confirm-cancel" value="Confirm" data-selectedBookingID="${bookingID}">
+        </form>
+    `);
+
+}
+
+const cancelBookingAndShowResponse = (bookingID) => {
+  cancelBooking(bookingID)
+    .then(response => {
+      if (!response.ok) {
+        throw 'Oops, looks like something went wrong. Please try agian.'
+      } else {
+        refresPromise(cancelMessage);
+      }
+
+    })
+    .catch(error => {
+      dashboardSectionCustomer.innerHTML += (`<p id="bookingError">${error}</p>`);
+      setError(document.getElementById('bookingError'));
+    });
+
+}
+
+const bookRoomCustomer = () => {
+  hide([dashboardSectionCustomer]);
+  show([bookRoomSectionCustomer]);
+  bookRoomSectionCustomer.innerHTML = (`
+        <nav class="nav">
+            <button class="nav-btn" id="dashBtn"> Dashboard</book>
+        </nav>
+        <section class="find-room-wrapper">
+            <h1 class="heading find-room-heading">It pleases the Lord Sauron to find you a fresh room!.</h1>
+            <p class="information pick-date-info">When will you Arrive?.</p>
+            <form class="room-picker" id="roomPicker">
+                <label class="search-label" for="stay-date">Choose From The Calender!: </label>
+                <input class="search-input-calender" type="date" id="datePicker" name="stay-date" value="${getTodaysDate().split('/').join('-')}" min="${getTodaysDate().split('/').join('-')}" max="2024-01-01">
+                <input class="find-btn" id="roomPickerBtn" type="submit" value="Find Rooms">
+            </form>
+        </section>
+    `);
+
+}
+
+const displayAvailableRooms = (dateAndElement) => {
+  dateAndElement.element.innerHTML = (`
+        <nav class="nav">
+            <button class="nav-btn" id="dashBtn"> Dashboard</book>
+            <button class="nav-btn" id="backToSelectDate">Back</button>
+        </nav>
+    `);
+  const availableRooms = hotel.getAvailableAndUnavailableRooms(dateAndElement.date).availableRooms;
+  if (!availableRooms.length) {
+    dateAndElement.element.innerHTML += (`
+            <div class="no-rooms-available">
+                <h1 class="heading">There are no available rooms for ${makeDateDisplay(dateAndElement.date)}.</h1>
+                <p class="information">We're so sorry! We are looking forward to having you, can you come another night?</p>
+                <button class="search-btn" id="returnToPickerBtn">Pick another Date</button>
+            </div>
+        `)
+  } else {
+    displayAvailableUnfilteredRooms({ rooms: availableRooms, date: dateAndElement.date, element: dateAndElement.element });
+  }
+
+}
+
+const displayFilteredRoomDetails = (dateAndRoomType) => {
+  const availableRooms = hotel.getAvailableAndUnavailableRooms(dateAndRoomType.date).availableRooms;
+  if (!dateAndRoomType.roomType.length) {
+    document.getElementById('roomPickerHeading').innerText = (`Here are all available rooms for ${makeDateDisplay(dateAndRoomType.date)}.`)
+    displayRoomsAndDetails({ rooms: availableRooms, date: dateAndRoomType.date, element: 'availableRoomSection' });
+  } else {
+    const filteredRooms = hotel.filterRoomsByType({ rooms: availableRooms, roomType: dateAndRoomType.roomType });
+    if (!filteredRooms.length) {
+      document.getElementById('roomPickerHeading').innerText = (`Sorry, there are no rooms with the type ${makeUpperCase(dateAndRoomType.roomType)} available for ${makeDateDisplay(dateAndRoomType.date)}.`)
+    } else {
+      document.getElementById('roomPickerHeading').innerText = (`Here are all the rooms with the type ${makeUpperCase(dateAndRoomType.roomType)} available for ${makeDateDisplay(dateAndRoomType.date)}.`)
+      displayRoomsAndDetails({ rooms: filteredRooms, date: dateAndRoomType.date, element: 'availableRoomSection' });
+    }
+  }
+
+}
+
+const displayAvailableUnfilteredRooms = (roomsDateAndElement) => {
+  roomsDateAndElement.element.innerHTML += (`
             <h1 class="heading available-room-heading" id="roomPickerHeading">Here are all available rooms for ${makeDateDisplay(roomsDateAndElement.date)}.</h1>
             <form class="form-filter" id="filterRooms">
                 <label class="search-label-filter" for="room-type">Filter rooms by type: 
@@ -203,10 +435,10 @@ const displayAvailableUnfilteredRooms = () => {
 }
 
 const displayRoomsAndDetails = (roomsDateAndElementID) => {
- avalibleRoomsByDate.innerHTML = '';
+  document.getElementById(roomsDateAndElementID.element).innerHTML = '';
   roomsDateAndElementID.rooms.forEach((room, i) => {
     const hasBidet = room.bidet ? 'Has a bidet' : 'Doesn\'t have a bidet';
-    avalibleRoomsByDate.innerHTML += (`
+    document.getElementById(roomsDateAndElementID.element).innerHTML += (`
             <article class="room-wrapper ${room.roomType.split(' ').join('-')}" id="room${room.number}">
                 <p class="room-filter-info">${makeUpperCase(room.roomType)}</p>
                 <ul class="list">
@@ -223,49 +455,229 @@ const displayRoomsAndDetails = (roomsDateAndElementID) => {
 
 }
 
-const displayAvailableRoomsManager = (date) => {
-  const availableRooms = hotel.returnAvailableAndBookedRooms(date).availableRooms
-  if (!availableRooms.length) {
-    avalibleRoomsByDate.innerHTML = ('<h1 class="heading-no-rooms">We\'re so sorry. Looks like we are all booked up for this night.</h1>');
-  } else {
-    avalibleRoomsByDate.innerHTML = "";
-    displayAvailableUnfilteredRooms({ rooms: availableRooms, date: date, element: document.getElementById('availableRoomSectionManager') });
-  }
+const displayConfirmBooking = (dateAndRoomNum) => {
+  const selectedRoom = hotel.findRoom(parseInt(dateAndRoomNum.roomNumber));
+  bookRoomSectionCustomer.innerHTML = (`
+        <nav class="nav">
+            <button class="nav-btn" id="dashBtn"> Dashboard</book>
+            <button class="nav-btn" id="backToSelectRoom" data-date="${dateAndRoomNum.date}">Back</button>
+        </nav>
+        <section class="confirm-booking-customer">
+            <h1 class="heading">Let's confirm your booking details.</h1>
+            <p class="information">You have not booked this room yet, confirm below to book this room.</p>
+            <ul class="list">
+                <li> Booking Date: ${makeDateDisplay(dateAndRoomNum.date)}</li>
+                <li> Room Type: ${selectedRoom.roomType}</li>
+                <li> Room Number: ${selectedRoom.number}</li>
+                <li> Bed Size: ${selectedRoom.bedSize}</li>
+                <li> Number of Beds: ${selectedRoom.numBeds}</li>
+                <li> Cost Per Night: $${selectedRoom.costPerNight}</li>
+            </ul>
+            <p class="hidden" id="bookingError"></p>
+            <button class="confirm-btn" id="confirmBookingBtn" data-date="${dateAndRoomNum.date}" data-roomNumber="${dateAndRoomNum.roomNumber}">Confirm Booking</button>    
+        </section>
+    `);
 
 }
 
+const confirmBooking = (dateAndRoomNumber) => {
+  const booking = hotel.makeBookingObj({ id: customer.id, date: dateAndRoomNumber.date, roomNumber: dateAndRoomNumber.roomNumber });
+  postBooking(booking)
+    .then(data => {
+      refresPromise(bookedMessage)
+    })
+    .catch(error => {
+      show([document.getElementById('bookingError')])
+      setError(document.getElementById('bookingError'))
+      document.getElementById('bookingError').innerHTML = ` ${error}`;
+    });
+
+}
+
+const loginAsManager = () => {
+  Promise.all([getFetch('customers'), getFetch('rooms'), getFetch('bookings')])
+    .then(data => {
+      manager = new Manager({ customers: data[0].customers, allBookings: data[2].bookings });
+      hotel = new Hotel({ allRooms: data[1].rooms, allBookings: data[2].bookings });
+      show([dashboardSectionManager]);
+      hide([loginSection]);
+      displayManagerDash();
+    })
+    .catch(error => {
+      setError(document.getElementById('loginDescription'));
+      document.getElementById('loginDescription').innerHTML = ` Looks like something went wrong. Error: ${error}`
+    });
+
+}
+
+const loginAsCustomer = (loginNum) => {
+  show([dashboardSectionCustomer]);
+  hide([loginSection]);
+  Promise.all([getFetch(`customers/${loginNum}`), getFetch('rooms'), getFetch('bookings')])
+    .then(data => {
+      customer = new Customer({ customer: data[0], allBookings: data[2].bookings });
+      hotel = new Hotel({ allRooms: data[1].rooms, allBookings: data[2].bookings });
+      displayCustomerDash();
+    })
+    .catch(error => {
+      setError(document.getElementById('loginDescription'));
+      document.getElementById('loginDescription').innerHTML = ` Looks like something went wrong. Error: ${error}`
+    });
+
+}
+window.addEventListener('load', loginAsCustomer(4))
+/* EVENT LISTENERS */
+
+// window.addEventListener('load', () => {
+// show([loginSection]);
+//     loginSection.innerHTML = (` 
+//         <div class="login-wrapper" id="loginWrapper">
+//             <h1 class="heading login-heading">Welcome to Overlook</h1>
+//             <p class="login-description" id="loginDescription">Please sign in.</p>
+//             <form class="login-form">
+//                 <div class="login-name-wrapper">
+//                     <label class="screen-reader-only" for="login-name">Login Name: </label>
+//                     <input class="login-name-input" id="loginName" type="text" name="login-name" placeholder="Login Name">
+//                 </div>
+//                 <div class="password-wrapper">
+//                     <label class="screen-reader-only" for="password">Password: </label>
+//                     <input class="password-input" id="password" type="password" name="password" placeholder="Password">
+//                 </div>
+//                 <input class="login-submit-btn" id="loginSubmitBtn" type="submit" value="Login"> 
+//             <form>
+//         </div>
+//     `);
+
+// });
+
+// loginSection.addEventListener('click', (event) => {
+//     if (event.target.id === 'loginSubmitBtn') {
+//         event.preventDefault();
+//         const loginName = document.querySelector('#loginName').value;
+//         const password = document.querySelector('#password').value;
+//         const loginDescription = document.querySelector('#loginDescription');
+//         if (!loginName.length || !password.length) {
+//             loginDescription.innerHTML = 'Please enter your login name and password.';
+//             setError(loginDescription);
+//         } else if (password === 'overlook2021' && loginName === 'manager') {
+//             loginAsManager();
+//         } else if (password === 'overlook2021' && loginName.includes('customer') && loginName.replace('customer', '') <= 50 && loginName.replace('customer', '').length > 0) {
+//             loginAsCustomer(loginName.replace('customer', ''));
+//         } else {
+//             loginDescription.innerHTML = 'Invalid login credentials.';
+//             setError(loginDescription);
+//         }
+//     }
+
+// });
+
+dashboardSectionCustomer.addEventListener('click', (event) => {
+  if (event.target.getAttribute('data-bookingID')) {
+    const selectedRoom = hotel.findRoom(parseInt(event.target.getAttribute('data-roomNum')));
+    if (event.target.getAttribute('data-date') < getTodaysDate()) {
+      showSelectBooking({ selectedBooking: event.target.getAttribute('data-bookingID'), selectedRoom: selectedRoom })
+    } else if (event.target.getAttribute('data-date') >= getTodaysDate()) {
+      showSelectBooking({ selectedBooking: event.target.getAttribute('data-bookingID'), selectedRoom: selectedRoom });
+    }
+  } else if (event.target.id === 'dashBtn') {
+    displayCustomerDash();
+  } else if (event.target.id === 'cancelBtn') {
+    confirmCancelCustomer(event.target.getAttribute('data-selectedBookingID'));
+  } else if (event.target.id === 'confirmCancelBtn') {
+    event.preventDefault();
+    cancelBookingAndShowResponse(event.target.getAttribute('data-selectedBookingID'));
+  } else if (event.target.id === 'bookRoomBtn') {
+    bookRoomCustomer();
+  }
+
+});
 
 
+bookRoomSectionCustomer.addEventListener('click', (event) => {
+  if (event.target.id === 'roomPickerBtn') {
+    event.preventDefault();
+    displayAvailableRooms({ date: document.getElementById('datePicker').value.split('-').join('/'), element: bookRoomSectionCustomer });
+  } else if (event.target.id === 'roomFilterBtn') {
+    event.preventDefault();
+    displayFilteredRoomDetails({ roomType: document.getElementById('filterRoomChoice').value, date: event.target.getAttribute('data-date') });
+  } else if (event.target.id === 'dashBtn') {
+    show([dashboardSectionCustomer]);
+    hide([loginSection, bookRoomSectionCustomer]);
+    displayCustomerDash();
+  } else if (event.target.id === 'backToSelectDate') {
+    bookRoomCustomer();
+  } else if (event.target.id.includes('selectRoomBtn')) {
+    displayConfirmBooking({ date: event.target.getAttribute('data-date'), roomNumber: event.target.getAttribute('data-roomNumber') })
+  } else if (event.target.id === 'backToSelectRoom') {
+    displayAvailableRooms({ date: event.target.getAttribute('data-date'), element: bookRoomSectionCustomer });
+  } else if (event.target.id === 'confirmBookingBtn') {
+    confirmBooking({ date: event.target.getAttribute('data-date'), roomNumber: event.target.getAttribute('data-roomNumber') });
+  } else if (event.target.id === 'returnToPickerBtn') {
+    bookRoomCustomer();
+  }
 
+});
 
+dashboardSectionManager.addEventListener('click', (event) => {
+  if (event.target.id === 'managerFindCustomerBtn') {
+    displayCustomerSearch()
+  } else if (event.target.id === 'managerDashBtn') {
+    displayManagerDash();
+  } else if (event.target.id === 'customerSearchBtn') {
+    const customerName = document.getElementById('customerSearchInput').value
+    if (!customerName || !/^[a-zA-Z\s]+$/g.test(customerName)) {
+      show([document.getElementById('invalidName')]);
+      setError(document.getElementById('invalidName'))
+      return false;
+    }
+    displayCustomer(manager.findACustomer(makeUpperCase(customerName)));
+  } else if (event.target.getAttribute('data-confirmCancel')) {
+    const bookingID = event.target.getAttribute('data-bookingID');
+    cancelBooking(bookingID)
+      .then(response => {
+        if (!response.ok) {
+          throw 'Looks like something went wrong. The booking wasnt canceled'
+        } else {
+          refreshManagerHotelAndCustomers('canceled');
+        }
+      })
+      .catch(error => {
+        document.getElementById(`a${booking.id}`).innerHTML += `<p>Looks like something went wrong. Error: ${error}</p>`;
+        setError(document.getElementById(`a${booking.id}`));
+      })
+  } else if (event.target.getAttribute('data-bookingID')) {
+    confirmCancelManager(event.target.getAttribute('data-bookingID'))
+  } else if (event.target.id === 'makeBookingBtnManager') {
+    makeBookingDashManager();
+  }
 
+});
 
+bookRoomSectionManager.addEventListener('click', (event) => {
+  if (event.target.id === 'managerDashBtn') {
+    displayManagerDash();
+  } else if (event.target.id === 'managerFindCustomerBtn') {
+    displayCustomerSearch()
+  } else if (event.target.id === 'roomPickerBtnManager') {
+    event.preventDefault();
+    displayAvailableRoomsManager(document.getElementById('datePickerManager').value.split('-').join('/'));
+  } else if (event.target.id === 'roomFilterBtn') {
+    event.preventDefault();
+    displayFilteredRoomDetails({ date: event.target.getAttribute('data-date'), roomType: document.getElementById('filterRoomChoice').value });
+  } else if (event.target.getAttribute('data-confirmBooking')) {
+    event.preventDefault();
+    const booking = hotel.makeBookingObj({ id: customer.id, date: event.target.getAttribute('data-date'), roomNumber: parseInt(event.target.getAttribute('data-roomNumber')) });
+    postBooking(booking)
+      .then(data => {
+        refreshManagerHotelAndCustomers('confirmed');
+      })
+      .catch(error => {
+        document.getElementById(`room${booking.roomNumber}`).innerHTML += `<p>Looks like something went wrong. Error: ${error}</p>`;
+        setError(document.getElementById(`room${booking.roomNumber}`));
+      });
+  } else if (event.target.id.includes('selectRoomBtn')) {
+    event.preventDefault();
+    confirmBookingManager(event.target.id);
+  }
 
- 
-
-
-
-
-// const confirmBookingPost = (dateAndRoomNumber) => {
-//   const booking = hotel.makeBookingObj({ id: customer.id, date: dateAndRoomNumber.date, roomNumber: dateAndRoomNumber.roomNumber });
-//   postBooking(booking)
-//     .then(data => {
-//       refreshCustomerAndHotel(bookedMessage)
-//     })
-//     .catch(error => {
-//       userDashBoardLabel.innerText = `${error}`;
-//     });
-
-// }
-// const displayDashBoard = () => {
-//   dashBoard.innerHTML =
-
-
-
-
-//     buildBookings({ bookings: customer.futureBookings, elementID: 'futureBookings' });
-//   buildBookings({ bookings: customer.pastBookings, elementID:'previousBookings' });
-
-// }
-
-
+});
